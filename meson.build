@@ -8,7 +8,8 @@ project(
 subdir('lib/ft2mm')
 
 fonts_files = files(
-  'src/main.cpp'
+  'src/main.cpp',
+  'src/glad.c',
 )
 
 fonts = executable(
