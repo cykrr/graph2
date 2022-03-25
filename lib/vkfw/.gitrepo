@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/cvelth/vkfw
+	branch = main
+	commit = ed25b204146ce4013597706ccce3e72f49ae3462
+	parent = d57d8bee345f9ff98a73508867ebb1d82e31dad6
+	method = merge
+	cmdver = 0.4.3
