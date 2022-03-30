@@ -18,6 +18,7 @@ fonts_files = files(
   'src/gui/element.cpp',
   'src/gui/views/rectangle.cpp',
   'src/gui/views/cube.cpp',
+  'src/util.cpp',
 
 )
 vkfw_include = include_directories('lib/vkfw/include')

@@ -5,16 +5,16 @@ Rectangle::Rectangle(int x, int y, int w, int h) :
 {
     this->vertices = 12;
     this->indices = 12;
+    this->dim = 2;
 }
 
 
 void Rectangle::draw(){
-    std::cout << "draw\n";
     float arr[12] = {
-        (float)x + w, (float)y    , 0.2f,
-        (float)x + w, (float)y + h, 0.2f,
-        (float)x,     (float)y + h, 0.2f,
-        (float)x,     (float)y    , 0.2f
+        (float)x + w, (float)y    , 0.f,
+        (float)x + w, (float)y + h, 0.f,
+        (float)x,     (float)y + h, 0.f,
+        (float)x,     (float)y    , 0.f
     };
     unsigned int indices[6] = {
         0, 1, 3,

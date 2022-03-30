@@ -16,6 +16,9 @@
 #include "gui/views/rectangle.hpp"
 #include "gui/views/cube.hpp"
 
+#include "util.hpp"
+
+
 int Swidth = 0; 
 int Sheight = 0;
 
@@ -28,10 +31,10 @@ void framebufferSizeCallback(GLFWwindow *window, int width, int height)
 
 void draw2(){
     float arr[12] = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+     0.5f,  0.5f, -3.0f,  // top right
+     0.5f, -0.5f, -3.0f,  // bottom right
+    -0.5f, -0.5f, -3.0f,  // bottom left
+    -0.5f,  0.5f, -3.0f   // top left 
     };  
 
     unsigned int arr2[6] = {
@@ -52,38 +55,74 @@ void draw2(){
 
 int main() {
     GLFWwindow *window = initGLFW();
-    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glEnable(GL_DEPTH_TEST);
 
     Renderer *renderer = new Renderer();
     renderer->program->use();
 
+    renderer->w = 800; renderer->h = 800;
+
+//    Camera cam = OrthographicCamera(renderer->w, renderer->h);
+    Camera cam = MovingCamera(renderer->w, renderer->h);
+    renderer->setCam(cam);
+
+    glfwSetWindowUserPointer(window, renderer);
+
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int w, int h){
+            static_cast<Renderer*>(glfwGetWindowUserPointer(window))
+            ->update(w, h);
+            });
+
     renderer->add(new Cube());
+    renderer->add(new Rectangle(100 , 100, 100, 100));
     renderer->prepare();
 
-    Swidth = 800; Swidth = 800;
 
-    glm::mat4 view(1.0f), projection(1.0f), model(1.0f);
+    glm::mat4 view(1.0f), projection(1.0f);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glm::vec3 pos(0.f, 0.f, 3.f), 
+        front(0.f, 0.f, -1.f),
+        up(0.f, 1.f, 0.f);
+    const float speed = 2.5f;
+
     while(!glfwWindowShouldClose(window)){
 
+        glm::mat4 model(1.0f);
         processInput(window);
+        updateTime();
         glClearColorHex("#202020");
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         renderer->program->use();
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+            pos += front * speed * dt;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+            pos -= front * speed * dt;
+        }
+
+        view = glm::lookAt(pos, 
+                pos + front,
+                up);
+
+        projection = glm::perspective(glm::radians(45.0f), 
+                (float)renderer->w / (float)renderer->h, 0.1f, 100.0f);
 
 
-        model = glm::rotate(model, (float)(glfwGetTime()),
-                glm::vec3(1.0f, 1.0f, 0.0f));
+//        model = glm::rotate(model, (float)(currentTime),
+ //               glm::vec3(2.f, 1.0f, 0.0f));
+
 
         glm::mat4 MVP = projection * view * model;
 
-        renderer->program->use();
+        glBindVertexArray(renderer->VAO);
+
 
         renderer->program->setMat4("mvp", MVP);
-        printf("%f\n",  MVP[0][0] );
 
-        glBindVertexArray(renderer->VAO);
-        renderer->draw();
+        renderer->childs[0]->draw();
+
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

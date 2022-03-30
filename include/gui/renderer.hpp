@@ -1,10 +1,11 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-#include "glad/glad.h"
+#define GLFW_INCLUDE_NONE
 #include "gui/program.hpp"
 #include "gui/element.hpp"
 #include "gui/cam.hpp"
 #include <vector>
+#include "glad/glad.h"
 class Renderer {
     public:
         Renderer();
@@ -15,12 +16,12 @@ class Renderer {
         void initVBO();
         void initEBO();
 
-        Program *program;
+        Program *program = NULL;
         void add(Element *element);
         std::vector<Element *>childs;
 
         void prepare();
-        Element *bigger=NULL;
+        Element *bigger = NULL;
 
         void draw();
         void setCam(Camera &camera);

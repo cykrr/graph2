@@ -17,7 +17,7 @@ Renderer::Renderer()
 
 void Renderer::applyCam()
 {
-    this->program->setMat4("m", this->camera->matrix);
+    this->program->setMat4("mvp", this->camera->matrix);
 }
 
 void Renderer::update(int w, int h){
@@ -32,7 +32,7 @@ void Renderer::update(int w, int h){
     if(this->camera) {
         this->camera->update(w, h);
         std::cout << "Push Matrix\n";
-        program->setMat4("m", camera->matrix);
+        program->setMat4("mvp", camera->matrix);
     } 
 
 
@@ -91,8 +91,7 @@ void Renderer::initEBO(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 }
 
-void Renderer::add(Element *element)
-{
+void Renderer::add(Element *element) {
     this->childs.push_back(element);
     if (!this->bigger) this->bigger = element;
     if (this->bigger->vertices < element->vertices)
