@@ -50,3 +50,20 @@ void MovingCamera::moveRight(){
 
 void MovingCamera::moveUp(){}
 void MovingCamera::moveDown(){}
+
+const glm::vec3 Cam3D::up = glm::vec3(0.f, 1.f, 0.f);
+
+Cam3D::Cam3D() {
+   pos = glm::vec3(0.f, 0.f, 3.f);
+   front = glm::vec3(0.f, 0.f, -1.f);
+}
+
+
+void Cam3D::moveFront() {
+    this->pos += this->front * this->speed * dt ;
+}
+
+void Cam3D::update(int w, int h) {
+    this->projection = glm::perspective(glm::radians(45.f),
+            (float)w / (float)h, 0.1f, 100.f);
+}

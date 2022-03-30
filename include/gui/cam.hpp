@@ -34,6 +34,7 @@ class MovingCamera : public Camera {
         MovingCamera();
         static glm::vec3 vUp, vFront;
         glm::vec3 pos, direction, right;
+        float yaw = -90.0f, pitch = 0, roll = 0;
         float speed;
 
         void update(int w, int h);
@@ -44,6 +45,27 @@ class MovingCamera : public Camera {
         void moveDown();
         void moveLeft();
         void moveRight();
+};
+
+class Cam3D {
+    public:
+        Cam3D();
+        glm::vec3 pos, direction, front;
+
+        const static glm::vec3 up;
+
+        glm::mat4 view, projection;
+
+        bool firstMouse = 1;
+        float lastX = 400, lastY = 400;
+
+        float yaw = -90.f, pitch = 0, roll = 0;
+
+        float speed = 0;
+        float sensitivity = 0.1f;
+
+        void update(int w, int h);
+        void moveFront();
 };
 
 #endif

@@ -14,7 +14,12 @@ GLFWwindow *initGLFW()
             GLFW_OPENGL_PROFILE, 
             GLFW_OPENGL_CORE_PROFILE);
 
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+
     glfwMakeContextCurrent(window);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    glfwSetCursorPosCallback(window, mouseCallback);
 
 
     if(!gladLoadGLLoader(

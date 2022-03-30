@@ -19,6 +19,7 @@
 #include "util.hpp"
 
 
+
 int Swidth = 0; 
 int Sheight = 0;
 
@@ -55,6 +56,10 @@ void draw2(){
 
 int main() {
     GLFWwindow *window = initGLFW();
+    int joystickPresent = glfwJoystickPresent(GLFW_JOYSTICK_1);
+    if (joystickPresent) {
+        std::cout << "found Joystick\n";
+    }
     glEnable(GL_DEPTH_TEST);
 
     Renderer *renderer = new Renderer();
@@ -62,9 +67,10 @@ int main() {
 
     renderer->w = 800; renderer->h = 800;
 
-//    Camera cam = OrthographicCamera(renderer->w, renderer->h);
-    Camera cam = MovingCamera(renderer->w, renderer->h);
-    renderer->setCam(cam);
+    Cam3D camm;
+    camm.speed = 2.5f;
+
+    renderer->setCam3d(camm);
 
     glfwSetWindowUserPointer(window, renderer);
 
@@ -78,47 +84,58 @@ int main() {
     renderer->prepare();
 
 
-    glm::mat4 view(1.0f), projection(1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glm::vec3 pos(0.f, 0.f, 3.f), 
-        front(0.f, 0.f, -1.f),
-        up(0.f, 1.f, 0.f);
-    const float speed = 2.5f;
+
 
     while(!glfwWindowShouldClose(window)){
+        GLFWgamepadstate state;
+        glfwGetGamepadState(GLFW_JOYSTICK_1, &state);
 
-        glm::mat4 model(1.0f);
-        processInput(window);
         updateTime();
+
         glClearColorHex("#202020");
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
         renderer->program->use();
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-            pos += front * speed * dt;
+
+        if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+            glfwWindowShouldClose(window);
         }
 
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-            pos -= front * speed * dt;
+        if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
+                isPressed(window, GLFW_KEY_W) ) {
+            camm.moveFront();
+        }
+            
+        if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] > 0.1 || 
+                isPressed(window, GLFW_KEY_S)){
+            camm.pos -= camm.front * camm.speed * dt;
         }
 
-        view = glm::lookAt(pos, 
-                pos + front,
-                up);
+        if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] < -0.1 ||
+                isPressed(window, GLFW_KEY_A))
+            camm.pos += glm::normalize(glm::cross(camm.up, camm.front)) *
+                camm.speed * dt;
 
-        projection = glm::perspective(glm::radians(45.0f), 
-                (float)renderer->w / (float)renderer->h, 0.1f, 100.0f);
+        if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] > 0.1 ||
+                isPressed(window, GLFW_KEY_D))
+            camm.pos -= glm::normalize(glm::cross(camm.up, camm.front)) *
+                camm.speed * dt;
 
 
-//        model = glm::rotate(model, (float)(currentTime),
- //               glm::vec3(2.f, 1.0f, 0.0f));
+        renderer->sendView();
 
 
-        glm::mat4 MVP = projection * view * model;
+
+
+
+        renderer->program->setMat4("v", camm.view);
+
+        renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
 
         glBindVertexArray(renderer->VAO);
 
 
-        renderer->program->setMat4("mvp", MVP);
 
         renderer->childs[0]->draw();
 

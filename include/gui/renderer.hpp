@@ -24,13 +24,15 @@ class Renderer {
         Element *bigger = NULL;
 
         void draw();
-        void setCam(Camera &camera);
+        void setCam3d(Cam3D & cam);
         void applyCam();
-        Camera *camera = NULL;
+        Cam3D *cam3d = NULL;
 
         void update(int w, int h);
         int w; 
         int h;
+
+        void sendView();
 
 };
 #endif

@@ -15,11 +15,6 @@ Renderer::Renderer()
     glEnableVertexAttribArray(0);
 }
 
-void Renderer::applyCam()
-{
-    this->program->setMat4("mvp", this->camera->matrix);
-}
-
 void Renderer::update(int w, int h){
     std::cout << "Resize " << w << "x" << 
         h << '\n';
@@ -29,18 +24,16 @@ void Renderer::update(int w, int h){
 
     glViewport(0, 0, w, h);
 
-    if(this->camera) {
-        this->camera->update(w, h);
-        std::cout << "Push Matrix\n";
-        program->setMat4("mvp", camera->matrix);
-    } 
-
+    if (this->cam3d) {
+        cam3d->update(w,h);
+        this->program->setMat4("p", cam3d->projection);
+    }
 
 }
 
-void Renderer::setCam(Camera &camera)
+void Renderer::setCam3d(Cam3D &cam)
 {
-    this->camera = &camera;
+    this->cam3d = &cam;
 }
 
 void Renderer::draw()
@@ -73,7 +66,7 @@ void Renderer::prepare()
     glBindVertexArray(VAO);
     this->program->use();
 
-    if(this->camera) this->camera->update(w, h);
+    if(this->cam3d) this->cam3d->update(w, h);
 }
 
 void Renderer::initVAO(){
@@ -98,3 +91,9 @@ void Renderer::add(Element *element) {
         this->bigger = element;
 }
 
+void Renderer::sendView() {
+        this->cam3d->view = glm::lookAt(this->cam3d->pos, 
+                this->cam3d->pos + this->cam3d->front,
+                this->cam3d->up);
+    this->program->setMat4("v", this->cam3d->view);
+}
