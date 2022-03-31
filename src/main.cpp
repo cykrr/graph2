@@ -123,6 +123,10 @@ int main() {
             camm.pos -= glm::normalize(glm::cross(camm.up, camm.front)) *
                 camm.speed * dt;
 
+        if(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] > 0.1 ||
+                state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] < -0.1){
+            printf ("%f", state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
+        }
 
         renderer->sendView();
 
