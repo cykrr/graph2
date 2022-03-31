@@ -28,7 +28,7 @@ MovingCamera::MovingCamera(int w, int h) : MovingCamera() {
 
 void MovingCamera::update(int w, int h) {
     mV = glm::lookAt(pos, pos + vFront, vUp);
-    mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.1f, 100.f);
+    mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.0f, 100.f);
     matrix = mP * mV * mM;
 }
 
