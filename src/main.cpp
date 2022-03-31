@@ -133,16 +133,18 @@ int main() {
 
 
 
-
-        renderer->program->setMat4("v", camm.view);
-
-        renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
-
-        glBindVertexArray(renderer->VAO);
-
-
+        renderer->program->setMat4("m", glm::mat4(1.f));
 
         renderer->childs[0]->draw();
+
+        
+        renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
+        glBindVertexArray(renderer->VAO);
+
+        renderer->childs[1]->draw();
+
+       
+
 
 
         glfwSwapBuffers(window);
