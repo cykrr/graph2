@@ -15,6 +15,7 @@
 #include "gui/cam.hpp"
 #include "gui/views/rectangle.hpp"
 #include "gui/views/cube.hpp"
+#include "gui/views/3drect.hpp"
 
 #include "util.hpp"
 
@@ -79,8 +80,8 @@ int main() {
             ->update(w, h);
             });
 
+    renderer->add(new Rect3d());
     renderer->add(new Cube());
-    renderer->add(new Rectangle(100 , 100, 100, 100));
     renderer->prepare();
 
 
