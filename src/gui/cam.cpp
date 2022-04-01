@@ -4,6 +4,7 @@ OrthographicCamera::OrthographicCamera(int width, int height)
     update(width, height);
 }
 
+
 void OrthographicCamera::update(int width, int height)
 {
     std::cout << "Update matrix ortho\n";
@@ -66,4 +67,19 @@ void Cam3D::moveFront() {
 void Cam3D::update(int w, int h) {
     this->projection = glm::perspective(glm::radians(45.f),
             (float)w / (float)h, 0.1f, 100.f);
+}
+
+void Cam3D::updateDirection() {
+
+    this->direction.x = cos(glm::radians(this->yaw));
+    this->direction.x *= cos(glm::radians(this->pitch));
+
+    this->direction.y = sin(glm::radians(this->pitch));
+
+    this->direction.z = sin(glm::radians(this->yaw));
+    this->direction.z *= cos(glm::radians(this->pitch));
+
+    this->front = glm::normalize(this->direction);
+
+
 }

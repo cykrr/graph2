@@ -66,6 +66,7 @@ class Cam3D {
 
         void update(int w, int h);
         void moveFront();
+        void updateDirection();
 };
 
 #endif
