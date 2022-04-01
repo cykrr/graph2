@@ -48,19 +48,19 @@ void Renderer::draw()
 void Renderer::prepare()
 {
     std::cout << "Bv: " << 
-        this->bigger->vertices << 
-        " Bi: " << this->bigger->indices <<
+        this->biggerVertices << 
+        " Bi: " << this->biggerIndices <<
         '\n';
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, 
-            this->bigger->vertices * sizeof(float),
+            this->biggerVertices * sizeof(float),
             nullptr, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 
-            this->bigger->indices * sizeof(unsigned int),
+            this->biggerIndices * sizeof(unsigned int),
             nullptr, GL_STATIC_DRAW);
 
     glBindVertexArray(VAO);
@@ -83,12 +83,21 @@ void Renderer::initEBO(){
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 }
+/* Bigger element pointer is not working, so instead we will declare two size_t 
+ * 
+ * The problem faced is that Cube doesn't use indices and it's the bigger element,
+ * so the biggest indices memory reserved does not cover all elements in the renderer.
+ * For instance 3dRect can't be drawn because it needs 6 indices to work. */
 
 void Renderer::add(Element *element) {
     this->childs.push_back(element);
-    if (!this->bigger) this->bigger = element;
-    if (this->bigger->vertices < element->vertices)
-        this->bigger = element;
+    if (!this->biggerIndices) this->biggerIndices = element->indices;
+    if (this->biggerIndices < element->indices)
+        this->biggerIndices = element->indices;
+
+    if (!this->biggerVertices) this->biggerVertices = element->vertices;
+    if (this->biggerVertices < element->vertices)
+        this->biggerVertices = element->vertices;
 }
 
 void Renderer::sendView() {

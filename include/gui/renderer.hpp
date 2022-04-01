@@ -21,7 +21,7 @@ class Renderer {
         std::vector<Element *>childs;
 
         void prepare();
-        Element *bigger = NULL;
+        size_t biggerVertices = 0, biggerIndices = 0;
 
         void draw();
         void setCam3d(Cam3D & cam);

@@ -9,7 +9,7 @@ void checkErrors(unsigned int id, std::string type)
             glGetShaderInfoLog(id, 512, NULL, log);
             std::cout << log << '\n';
         } 
-   } else {
+   } else if (type == "program") {
        glGetProgramiv(id, GL_LINK_STATUS, &success);
        if(!success){
            glGetProgramInfoLog(id, 512, NULL, log);
@@ -62,6 +62,10 @@ Program::Program(std::string name)
     glCompileShader(frag);
     checkErrors(frag, "fragment");
 
+    int success; char log[512];
+
+   glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+       std::cout << "ERRRR" << success << "\n";
     this->id = glCreateProgram();
 
     glAttachShader(id, vertex);
