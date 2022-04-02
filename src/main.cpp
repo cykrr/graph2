@@ -24,13 +24,6 @@
 int Swidth = 0; 
 int Sheight = 0;
 
-void framebufferSizeCallback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-    Swidth = width;
-    Sheight = height;
-}
-
 void draw2(){
     float arr[12] = {
      0.5f,  0.5f, -3.0f,  // top right
