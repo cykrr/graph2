@@ -5,6 +5,8 @@ uniform mat4 m;
 uniform mat4 v;
 uniform mat4 p;
 
+out vec3 aPos;
+
 void main()
 {
 	gl_Position = p * v * m * vec4(aPos.xyz, 1.0f);
