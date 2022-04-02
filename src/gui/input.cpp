@@ -1,11 +1,4 @@
 #include "gui/input.hpp"
-void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_TRUE)
-        glfwSetWindowShouldClose(window, true);
-}
-
-
 void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     Renderer *renderer = static_cast<Renderer *>
         (glfwGetWindowUserPointer(window));
