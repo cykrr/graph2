@@ -110,7 +110,7 @@ int main() {
 
         renderer->program->use();
 
-        if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        if(isPressed(window, GLFW_KEY_Q)) {
             glfwWindowShouldClose(window);
         }
 
