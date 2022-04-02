@@ -5,6 +5,7 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
+
 void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     Renderer *renderer = static_cast<Renderer *>
         (glfwGetWindowUserPointer(window));
@@ -32,15 +33,7 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     if(renderer->cam3d->pitch < -89.f)
         renderer->cam3d->pitch = -89.f;
 
-    renderer->cam3d->direction.x = cos(glm::radians(renderer->cam3d->yaw));
-    renderer->cam3d->direction.x *= cos(glm::radians(renderer->cam3d->pitch));
-
-    renderer->cam3d->direction.y = sin(glm::radians(renderer->cam3d->pitch));
-
-    renderer->cam3d->direction.z = sin(glm::radians(renderer->cam3d->yaw));
-    renderer->cam3d->direction.z *= cos(glm::radians(renderer->cam3d->pitch));
-
-    renderer->cam3d->front = glm::normalize(renderer->cam3d->direction);
+    renderer->cam3d->updateDirection();
 
 
     
