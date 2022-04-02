@@ -104,7 +104,7 @@ int main() {
         renderer->program->use();
 
         if(isPressed(window, GLFW_KEY_Q)) {
-            glfwWindowShouldClose(window);
+            glfwSetWindowShouldClose(window, true);
         }
 
         if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
@@ -161,10 +161,6 @@ int main() {
         
         renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
         glBindVertexArray(renderer->VAO);
-
-
-       
-
 
 
         glfwSwapBuffers(window);
