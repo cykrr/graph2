@@ -5,4 +5,9 @@
 #include "gui/renderer.hpp"
 void processInput(GLFWwindow *window);
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
+
+void kbCallback(GLFWwindow *window,
+        int key, int scanCode, int action, 
+        int mode);
+
 #endif
