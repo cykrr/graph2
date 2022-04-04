@@ -1,11 +1,5 @@
 #include "gui/views/3drect.hpp"
 Rect3d::Rect3d() {
-    glm::vec3 arr[] = {
-        glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(1.f, 0.f, 0.f),
-        glm::vec3(0.f, 1.f, 0.f),
-        glm::vec3(1.f, 1.f, 0.f)
-    };
     this->vertices = 4;
     this->indices = 6;
     this->dim = 3;
@@ -13,15 +7,15 @@ Rect3d::Rect3d() {
 
 void Rect3d::draw() {
     float vertexArr[] = {
-        0.f, 0.f, 0.f,
-        1.f, 0.f, 0.f,
-        0.f, 1.f, 0.f,
-        1.f, 1.f, 0.f
+        -1.f, 1.f, 0.f,
+        1.f, 1.f, 0.f,
+        -1.f, -1.f, 0.f,
+        1.f, -1.f, 0.f,
         
     };
     unsigned int indicesArr[] = {
-        0, 1, 3,
-        0, 3, 2
+        0, 1, 2,
+        2, 3, 1 
     };
     
     glBufferSubData(GL_ARRAY_BUFFER, 0,
