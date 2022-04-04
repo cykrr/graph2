@@ -29,10 +29,3 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     renderer->cam3d->updateDirection();
 }
 
-void kbCallback(GLFWwindow *win, int key,
-        int scanCode, int action, int mode) 
-{
-    if(key == GLFW_KEY_Q && action != GLFW_PRESS) {
-        glfwSetWindowShouldClose(win, true);
-    }
-}

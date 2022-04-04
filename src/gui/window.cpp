@@ -20,7 +20,6 @@ GLFWwindow *initGLFW()
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(window, mouseCallback);
-    glfwSetKeyCallback(window, kbCallback);
 
 
     if(!gladLoadGLLoader(

@@ -103,10 +103,6 @@ int main() {
 
         renderer->program->use();
 
-        if(isPressed(window, GLFW_KEY_Q)) {
-            glfwSetWindowShouldClose(window, true);
-        }
-
         if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
                 isPressed(window, GLFW_KEY_W) ) {
             camm.pos -= camm.front * camm.speed * dt * 
