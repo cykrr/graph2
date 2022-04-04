@@ -105,14 +105,12 @@ int main() {
 
         if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
                 isPressed(window, GLFW_KEY_W) ) {
-            camm.pos -= camm.front * camm.speed * dt * 
-                state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
+            camm.pos += camm.front * camm.speed * dt  ;
         }
             
         if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] > 0.1 || 
                 isPressed(window, GLFW_KEY_S)){
-            camm.pos -= camm.front * camm.speed * dt * 
-                state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
+            camm.pos -= camm.front * camm.speed * dt;
         }
 
         if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] < -0.1 ||
