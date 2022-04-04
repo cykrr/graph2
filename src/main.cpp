@@ -16,6 +16,7 @@
 #include "gui/views/rectangle.hpp"
 #include "gui/views/cube.hpp"
 #include "gui/views/3drect.hpp"
+#include "gui/views/plane.hpp"
 
 #include "util.hpp"
 
@@ -84,12 +85,11 @@ int main() {
             ->update(w, h);
             });
 
-    renderer->add(new Rect3d());
     renderer->add(new Cube());
+    renderer->add(new Plane());
     renderer->prepare();
 
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
     while(!glfwWindowShouldClose(window)){
@@ -100,8 +100,6 @@ int main() {
 
         glClearColorHex("#202020");
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-        renderer->program->use();
 
         if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
                 isPressed(window, GLFW_KEY_W) ) {
@@ -146,14 +144,18 @@ int main() {
 
 
 
-
-        renderer->program->setMat4("m", glm::mat4(1.f));
-
-        renderer->childs[0]->draw();
+        static_cast<Plane*>(renderer->childs[1])->program->use();
+        static_cast<Plane*>(renderer->childs[1])->program->setMat4("p", renderer->cam3d->projection);
+        static_cast<Plane*>(renderer->childs[1])->program->setMat4("v", renderer->cam3d->view);
         renderer->childs[1]->draw();
 
-        
+        renderer->program->use();
+        renderer->program->setMat4("m", glm::mat4(1.f));
+
         renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
+
+        renderer->childs[0]->draw();
+
         glBindVertexArray(renderer->VAO);
 
 
