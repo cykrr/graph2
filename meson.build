@@ -7,7 +7,6 @@ project(
 
 
 fonts_files = files(
-  'src/main.cpp',
   'src/glad.c',
   'src/gui/color.cpp',
   'src/gui/window.cpp',
@@ -25,9 +24,22 @@ fonts_files = files(
 )
 vkfw_include = include_directories('lib/vkfw/include')
 
-fonts = executable(
+fonts2 = executable(
   'fonts',
-  [ fonts_files],
+  [ fonts_files + 'src/main.cpp'],
+  dependencies:[
+    dependency('glfw3'),
+    dependency('freetype2')
+    ],
+  include_directories: [
+    include_directories('include'),
+    vkfw_include
+    ]
+  )
+
+fonts = executable(
+  'fonts2',
+  [ fonts_files + 'src/main2.cpp'],
   dependencies:[
     dependency('glfw3'),
     dependency('freetype2')

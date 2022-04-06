@@ -8,4 +8,8 @@ extern float dt;
 extern float currentTime;
 extern float prevTime;
 void updateTime();
+
+#define ZFAR 100.f
+#define ZNEAR 0.1f
+
 #endif

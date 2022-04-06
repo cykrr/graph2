@@ -29,3 +29,48 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     renderer->cam3d->updateDirection();
 }
 
+
+void processInput(GLFWwindow *window, Renderer *renderer) {
+
+    GLFWgamepadstate state;
+    glfwGetGamepadState(GLFW_JOYSTICK_2, &state);
+    
+    if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
+            isPressed(window, GLFW_KEY_W) ) {
+        renderer->cam3d->pos += renderer->cam3d->front * renderer->cam3d->speed * dt  ;
+    }
+        
+    if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] > 0.1 || 
+            isPressed(window, GLFW_KEY_S)){
+        renderer->cam3d->pos -= renderer->cam3d->front * renderer->cam3d->speed * dt;
+    }
+
+    if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] < -0.1 ||
+            isPressed(window, GLFW_KEY_A))
+        renderer->cam3d->pos += glm::normalize(glm::cross(renderer->cam3d->up, renderer->cam3d->front)) *
+            renderer->cam3d->speed * dt;
+
+    if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] > 0.1 ||
+            isPressed(window, GLFW_KEY_D))
+        renderer->cam3d->pos -= glm::normalize(glm::cross(renderer->cam3d->up, renderer->cam3d->front)) *
+            renderer->cam3d->speed * dt;
+
+    if(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] > 0.1 ||
+            state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] < -0.1){
+        printf ("%f\n", state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
+        renderer->cam3d->yaw += state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X];
+    }
+
+    if(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] > 0.1 ||
+            state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] < -0.1){
+        renderer->cam3d->pitch -= state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y];
+    }
+
+    if(isPressed(window, GLFW_KEY_Q))
+        glfwSetWindowShouldClose(window, true);
+
+
+    renderer->cam3d->updateDirection();
+
+    renderer->sendView();
+}

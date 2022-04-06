@@ -12,6 +12,7 @@ Renderer::Renderer()
             GL_FLOAT, GL_FALSE,
             3 * sizeof(float), 
             (void*)0);
+
     glEnableVertexAttribArray(0);
 }
 
@@ -19,8 +20,8 @@ void Renderer::update(int w, int h){
     std::cout << "Resize " << w << "x" << 
         h << '\n';
 
-    this->w = w;
-    this->h = h;
+    this->w = initWidth;
+    this->h = initHeight;
 
     glViewport(0, 0, w, h);
 

@@ -66,10 +66,15 @@ void Cam3D::moveFront() {
 
 void Cam3D::update(int w, int h) {
     this->projection = glm::perspective(glm::radians(45.f),
-            (float)w / (float)h, 0.1f, 100.f);
+            (float)w / (float)h, ZNEAR, ZFAR);
 }
 
 void Cam3D::updateDirection() {
+    if(this->pitch > 89.0f) 
+        this->pitch = 89.f;
+    if(this->pitch < -89.f)
+        this->pitch = -89.f;
+
 
     this->direction.x = cos(glm::radians(this->yaw));
     this->direction.x *= cos(glm::radians(this->pitch));
@@ -79,6 +84,7 @@ void Cam3D::updateDirection() {
     this->direction.z = sin(glm::radians(this->yaw));
     this->direction.z *= cos(glm::radians(this->pitch));
 
+    
     this->front = glm::normalize(this->direction);
 
 

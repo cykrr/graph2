@@ -10,6 +10,7 @@ class Renderer {
     public:
         static const int initWidth = 800;
         static const int initHeight = 600;
+
         Renderer();
 
         unsigned int VAO, VBO, EBO;

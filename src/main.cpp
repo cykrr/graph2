@@ -22,9 +22,6 @@
 
 
 
-int Swidth = 0; 
-int Sheight = 0;
-
 void draw2(){
     float arr[12] = {
      0.5f,  0.5f, -3.0f,  // top right
@@ -74,7 +71,6 @@ int main() {
     renderer->w = 800; renderer->h = 800;
 
     Cam3D camm;
-    camm.speed = 2.5f;
 
     renderer->setCam3d(camm);
 
@@ -89,6 +85,7 @@ int main() {
     renderer->add(new Plane());
     renderer->prepare();
 
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
 
 
 

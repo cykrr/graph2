@@ -22,10 +22,13 @@ GLFWwindow *initGLFW()
     glfwSetCursorPosCallback(window, mouseCallback);
 
 
+
     if(!gladLoadGLLoader(
         (GLADloadproc)glfwGetProcAddress)
     ){
         std::cout << "Error loading GLAD\n";
     }
+
+    glEnable(GL_DEPTH_TEST);
     return window;
 }

@@ -1,1 +1,1 @@
-./build/fonts
+build/fonts2
