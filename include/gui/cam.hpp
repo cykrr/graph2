@@ -53,6 +53,7 @@ class Cam3D {
         glm::vec3 pos, direction, front;
 
         const static glm::vec3 up;
+        static constexpr float speed = 2.5f;
 
         glm::mat4 view, projection;
 
@@ -61,7 +62,6 @@ class Cam3D {
 
         float yaw = -90.f, pitch = 0, roll = 0;
 
-        float speed = 0;
         float sensitivity = 0.1f;
 
         void update(int w, int h);
