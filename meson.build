@@ -28,23 +28,11 @@ fonts_files = files(
   'src/instance_drawer.cpp',
   'src/gui.cpp',
 
-  './src/imgui_impl_glfw.cpp',
-  './src/imgui_impl_opengl3.cpp',
+  './lib/imgui/imgui_impl_glfw.cpp',
+  './lib/imgui/imgui_impl_opengl3.cpp',
 
 )
 
-fonts2 = executable(
-  'fonts2',
-  [ fonts_files + 'src/main.cpp'],
-  dependencies:[
-    dependency('glfw3'),
-    dependency('freetype2'),
-    dependency('imgui')
-    ],
-  include_directories: [
-    include_directories('include'),
-    ]
-  )
 
 fonts = executable(
   'fonts',
@@ -56,5 +44,6 @@ fonts = executable(
     ],
   include_directories: [
     include_directories('include'),
+    include_directories('lib')
     ]
   )
