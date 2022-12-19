@@ -14,12 +14,12 @@ class Camera {
         virtual void update(int w, int h){}
         virtual ~Camera(){};
 
-        virtual void moveFront(){}
-        virtual void moveBack(){}
-        virtual void moveUp(){}
-        virtual void moveDown(){}
-        virtual void moveLeft(){}
-        virtual void moveRight(){}
+        // virtual void moveFront(){}
+        // virtual void moveBack(){}
+        // virtual void moveUp(){}
+        // virtual void moveDown(){}
+        // virtual void moveLeft(){}
+        // virtual void moveRight(){}
 };
 class OrthographicCamera : public Camera {
     public:
@@ -28,10 +28,10 @@ class OrthographicCamera : public Camera {
         void update(int w, int h);
 };
 
-class MovingCamera : public Camera {
+class PerspectiveCamera : public Camera {
     public:
-        MovingCamera(int w, int h);
-        MovingCamera();
+        PerspectiveCamera(int w, int h);
+        PerspectiveCamera();
         static glm::vec3 vUp, vFront;
         glm::vec3 pos, direction, right;
         float yaw = -90.0f, pitch = 0, roll = 0;

@@ -12,6 +12,7 @@ class Renderer {
         static const int initHeight = 600;
 
         Renderer();
+        ~Renderer();
 
         unsigned int VAO, VBO, EBO;
 

@@ -12,14 +12,14 @@ void OrthographicCamera::update(int width, int height)
             0.f, static_cast<float>(height), -1.0f, 1.0f);
 }
 
-glm::vec3 MovingCamera::vUp = glm::vec3(0.f, 1.f, 0.f);
-glm::vec3 MovingCamera::vFront = glm::vec3(0.f, 0.f, -1.f);
+glm::vec3 PerspectiveCamera::vUp = glm::vec3(0.f, 1.f, 0.f);
+glm::vec3 PerspectiveCamera::vFront = glm::vec3(0.f, 0.f, -1.f);
 
-MovingCamera::MovingCamera() : Camera() {
+PerspectiveCamera::PerspectiveCamera() : Camera() {
     pos = glm::vec3(0.f, 0.f, -3.f);
 }
 
-MovingCamera::MovingCamera(int w, int h) : MovingCamera() {
+PerspectiveCamera::PerspectiveCamera(int w, int h) : PerspectiveCamera() {
     speed = 2.5f;
     mV = glm::mat4(1.0f);
     mM = mV;
@@ -27,30 +27,30 @@ MovingCamera::MovingCamera(int w, int h) : MovingCamera() {
     update(w,h);
 }
 
-void MovingCamera::update(int w, int h) {
+void PerspectiveCamera::update(int w, int h) {
     mV = glm::lookAt(pos, pos + vFront, vUp);
     mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.0f, 100.f);
     matrix = mP * mV * mM;
 }
 
-void MovingCamera::moveFront(){
+void PerspectiveCamera::moveFront(){
     pos += speed * vFront * dt;
 }
 
-void MovingCamera::moveBack(){
+void PerspectiveCamera::moveBack(){
     pos -= speed * vFront * dt;
 }
 
-void MovingCamera::moveLeft(){
+void PerspectiveCamera::moveLeft(){
     pos -= glm::normalize(glm::cross(vFront, vUp)) * speed * dt;
 }
 
-void MovingCamera::moveRight(){
+void PerspectiveCamera::moveRight(){
     pos += glm::normalize(glm::cross(vFront, vUp)) * speed * dt;
 }
 
-void MovingCamera::moveUp(){}
-void MovingCamera::moveDown(){}
+void PerspectiveCamera::moveUp(){}
+void PerspectiveCamera::moveDown(){}
 
 const glm::vec3 Cam3D::up = glm::vec3(0.f, 1.f, 0.f);
 

@@ -1,168 +1,145 @@
-#include <iostream>
-#include <stdint.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "glad/glad.h"
-
-
+#include "VAO.hpp"
+#include "VBO.hpp"
 #include "gui/color.hpp"
-#include "gui/window.hpp"
-#include "gui/program.hpp"
-#include "gui/renderer.hpp"
-#include "gui/input.hpp"
-#include "gui/cam.hpp"
-#include "gui/views/rectangle.hpp"
 #include "gui/views/cube.hpp"
-#include "gui/views/3drect.hpp"
-#include "gui/views/plane.hpp"
+#include "gui/views/triangle.hpp"
+#include "gui/window.hpp"
+#include "shaders.hpp"
 
-#include "util.hpp"
+#include "imgui.h"
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
+#include <list>
 
+void gui_render(double dt);
 
-void draw2(){
-    float arr[12] = {
-     0.5f,  0.5f, -3.0f,  // top right
-     0.5f, -0.5f, -3.0f,  // bottom right
-    -0.5f, -0.5f, -3.0f,  // bottom left
-    -0.5f,  0.5f, -3.0f   // top left 
-    };  
+template <class T> class Instance {
+public:
+  void set_position(glm::vec3 &position);
+  const glm::vec3 &get_position();
 
-    unsigned int arr2[6] = {
-        0, 1, 3, 1, 2, 3
-    };
+private:
+  glm::vec3 position;
+  glm::vec3 scale;
+  // DrawableType type;
+};
 
-    glBufferSubData(GL_ARRAY_BUFFER, 
-            0, 12 * sizeof(float), 
-            arr);
+template <class T> class InstanceDrawer {
+public:
+  void draw();
+  void insert(Instance<T> *instance);
+  void show();
 
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 
-            0, 6 * sizeof(unsigned int), 
-            arr2);
+private:
+  T type;
+  std::list<Instance<T> *> instances;
+};
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
- 
+template <class T> void InstanceDrawer<T>::insert(Instance<T> *instance) {
+  instances.push_back(instance);
 }
 
-int main() {
-    GLFWwindow *window = initGLFW();
+template <class T> void InstanceDrawer<T>::draw() {
+  for (Instance<T> *t : instances) {
+    type.translate(t->get_position());
+    type.draw();
+  }
+}
 
-    Renderer *renderer = new Renderer();
+template <class T> const glm::vec3 &Instance<T>::get_position() {
+  this->position += glm::vec3(dt, 0, 0);
+  return this->position;
+}
 
-    int joystickPresent = glfwJoystickPresent(GLFW_JOYSTICK_2);
-    if (joystickPresent) {
-        std::cout << "1:" << 
-            glfwGetJoystickName(GLFW_JOYSTICK_1) << '\n';
-        std::cout << "2:" << 
-            glfwGetJoystickName(GLFW_JOYSTICK_2) << '\n';
-        std::cout << "3:" << 
-            glfwGetJoystickName(GLFW_JOYSTICK_3) << '\n';
-        std::cout << "4:" << 
-            glfwGetJoystickName(GLFW_JOYSTICK_4) << '\n';
-        
-    }
+template <class T> void InstanceDrawer<T>::show() {
+  std::vector<const char *> items;
+  std::vector<Instance<T> *> items_ptr;
+  for (Instance<T> *instance : instances) {
+    items.push_back(type.get_name());
+    items_ptr.push_back(instance);
+  }
+  static int listbox_item_current = -1;
+  if (ImGui::ListBox("listbox", &listbox_item_current, &items[0], items.size(),
+                     4)) {
+  }
 
-    glEnable(GL_DEPTH_TEST);
+  ImGui::PushItemWidth(-1);
+  ImGui::PopItemWidth();
+}
 
-    renderer->program->use();
+glm::vec3 rotate;
+glm::vec3 scale(1.f);
 
-    renderer->w = 800; renderer->h = 800;
+std::list<Drawable *> drawables;
 
-    Cam3D camm;
-
-    renderer->setCam3d(camm);
-
-    glfwSetWindowUserPointer(window, renderer);
-
-    glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int w, int h){
-            static_cast<Renderer*>(glfwGetWindowUserPointer(window))
-            ->update(w, h);
-            });
-
-    renderer->add(new Cube());
-    renderer->add(new Plane());
-    renderer->prepare();
-
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
-
-
-
-    while(!glfwWindowShouldClose(window)){
-        GLFWgamepadstate state;
-        glfwGetGamepadState(GLFW_JOYSTICK_2, &state);
-
-        updateTime();
-
-        glClearColorHex("#202020");
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-        if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] < -0.1 ||
-                isPressed(window, GLFW_KEY_W) ) {
-            camm.pos += camm.front * camm.speed * dt  ;
-        }
-            
-        if (state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] > 0.1 || 
-                isPressed(window, GLFW_KEY_S)){
-            camm.pos -= camm.front * camm.speed * dt;
-        }
-
-        if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] < -0.1 ||
-                isPressed(window, GLFW_KEY_A))
-            camm.pos += glm::normalize(glm::cross(camm.up, camm.front)) *
-                camm.speed * dt;
-
-        if(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] > 0.1 ||
-                isPressed(window, GLFW_KEY_D))
-            camm.pos -= glm::normalize(glm::cross(camm.up, camm.front)) *
-                camm.speed * dt;
-
-        if(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] > 0.1 ||
-                state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] < -0.1){
-            printf ("%f\n", state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
-            camm.yaw += state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X];
-        }
-
-        if(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] > 0.1 ||
-                state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] < -0.1){
-            camm.pitch -= state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y];
-        }
-
-
-        if(renderer->cam3d->pitch > 89.0f) 
-            renderer->cam3d->pitch = 89.f;
-        if(renderer->cam3d->pitch < -89.f)
-            renderer->cam3d->pitch = -89.f;
-
-        renderer->cam3d->updateDirection();
-
-        renderer->sendView();
-
-
-
-        static_cast<Plane*>(renderer->childs[1])->program->use();
-        static_cast<Plane*>(renderer->childs[1])->program->setMat4("p", renderer->cam3d->projection);
-        static_cast<Plane*>(renderer->childs[1])->program->setMat4("v", renderer->cam3d->view);
-        renderer->childs[1]->draw();
-
-        renderer->program->use();
-        renderer->program->setMat4("m", glm::mat4(1.f));
-
-        renderer->program->setMat4("m", glm::rotate(glm::mat4(1.0f), currentTime, glm::vec3(1.f, 2.f, 3.f)));
-
-        renderer->childs[0]->draw();
-
-        glBindVertexArray(renderer->VAO);
-
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glDeleteVertexArrays(1, &renderer->VAO);
-    glDeleteBuffers(1, &renderer->VBO);
-    glfwTerminate();
-
+int initImGui(GLFWwindow *window) {
+  ImGui::CreateContext();
+  ImGuiIO &io = ImGui::GetIO();
+  (void)io;
+  // setup platform/renderer bindings
+  if (!ImGui_ImplGlfw_InitForOpenGL(window, true)) {
     return 0;
+  }
+  if (!ImGui_ImplOpenGL3_Init("#version 330 core")) {
+    return 0;
+  }
+  return 0;
+}
+
+InstanceDrawer<Cube> *cube_drawer = NULL;
+int main() {
+  printf("TT_TT\n");
+  GLFWwindow *window = initGLFW();
+  initImGui(window);
+  cube_drawer = new InstanceDrawer<Cube>();
+
+  double dt = 0;
+  double then = 0;
+
+  while (!glfwWindowShouldClose(window)) {
+
+    double now = glfwGetTime();
+    dt = now - then;
+    then = now;
+
+    glClearColorHex("#202020"); // clear
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+    cube_drawer->draw();
+    gui_render(dt);
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
+}
+
+// enum DrawableType {
+//   Triangle,
+//   Cube,
+//   Circle
+// };
+
+void gui_render(double dt) {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+  bool my_tool_active = true;
+  ImGui::Begin("My First Tool", &my_tool_active);
+  if (ImGui::Button("Add Triangle:")) {
+  }
+  if (ImGui::Button("Add Cube:")) {
+    printf("press\n");
+    cube_drawer->insert(new Instance<Cube>());
+  }
+
+  ImGui::Text("Elements:");
+  ImGui::BeginChild("Scrolling");
+  cube_drawer->show();
+  ImGui::EndChild();
+
+  ImGui::End();
+  ImGui::EndFrame();
+
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

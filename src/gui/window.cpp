@@ -14,13 +14,18 @@ GLFWwindow *initGLFW()
             GLFW_OPENGL_PROFILE, 
             GLFW_OPENGL_CORE_PROFILE);
 
-    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+    // glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
 
     glfwMakeContextCurrent(window);
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
-    glfwSetCursorPosCallback(window, mouseCallback);
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    // glfwSetCursorPosCallback(window, mouseCallback);
 
+
+  glfwSetFramebufferSizeCallback(
+      window, [](GLFWwindow *win, int w, int h) {
+        glViewport(0, 0, w, h);
+      });
 
 
     if(!gladLoadGLLoader(
@@ -29,6 +34,6 @@ GLFWwindow *initGLFW()
         std::cout << "Error loading GLAD\n";
     }
 
-    glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_DEPTH_TEST);
     return window;
 }

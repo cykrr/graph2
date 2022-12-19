@@ -20,16 +20,24 @@ fonts_files = files(
   'src/util.cpp',
   'src/gui/views/3drect.cpp',
   'src/gui/views/plane.cpp',
+  'src/VAO.cpp',
+  'src/VBO.cpp',
+  'src/shaders.cpp',
+  'src/gui/views/triangle.cpp',
+  'src/gui/drawable.cpp',
+  './src/imgui_impl_glfw.cpp',
+  './src/imgui_impl_opengl3.cpp',
 
 )
 vkfw_include = include_directories('lib/vkfw/include')
 
 fonts2 = executable(
-  'fonts',
+  'fonts2',
   [ fonts_files + 'src/main.cpp'],
   dependencies:[
     dependency('glfw3'),
-    dependency('freetype2')
+    dependency('freetype2'),
+    dependency('imgui')
     ],
   include_directories: [
     include_directories('include'),
@@ -38,14 +46,18 @@ fonts2 = executable(
   )
 
 fonts = executable(
-  'fonts2',
-  [ fonts_files + 'src/main2.cpp'],
+  'fonts',
+  [ fonts_files + 'src/main.cpp'],
   dependencies:[
     dependency('glfw3'),
-    dependency('freetype2')
+    dependency('freetype2'),
+    dependency('imgui')
     ],
   include_directories: [
     include_directories('include'),
     vkfw_include
     ]
   )
+
+run_target('run',
+command : './do')

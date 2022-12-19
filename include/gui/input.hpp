@@ -11,3 +11,4 @@ void kbCallback(GLFWwindow *window,
 
 #endif
 void processInput(GLFWwindow *window, Renderer *renderer);
+void lookupJoystick();

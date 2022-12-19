@@ -74,3 +74,19 @@ void processInput(GLFWwindow *window, Renderer *renderer) {
 
     renderer->sendView();
 }
+
+void lookupJoystick() {
+    int joystickPresent = glfwJoystickPresent(GLFW_JOYSTICK_2);
+    if (joystickPresent) {
+        std::cout << "1:" << 
+            glfwGetJoystickName(GLFW_JOYSTICK_1) << '\n';
+        std::cout << "2:" << 
+            glfwGetJoystickName(GLFW_JOYSTICK_2) << '\n';
+        std::cout << "3:" << 
+            glfwGetJoystickName(GLFW_JOYSTICK_3) << '\n';
+        std::cout << "4:" << 
+            glfwGetJoystickName(GLFW_JOYSTICK_4) << '\n';
+        
+    }
+
+}
