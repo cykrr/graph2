@@ -26,13 +26,12 @@ fonts_files = files(
   'src/gui/views/triangle.cpp',
   'src/gui/drawable.cpp',
   'src/instance_drawer.cpp',
-  'src/menu.cpp',
+  'src/gui.cpp',
 
   './src/imgui_impl_glfw.cpp',
   './src/imgui_impl_opengl3.cpp',
 
 )
-vkfw_include = include_directories('lib/vkfw/include')
 
 fonts2 = executable(
   'fonts2',
@@ -44,7 +43,6 @@ fonts2 = executable(
     ],
   include_directories: [
     include_directories('include'),
-    vkfw_include
     ]
   )
 
@@ -58,7 +56,5 @@ fonts = executable(
     ],
   include_directories: [
     include_directories('include'),
-    vkfw_include
     ]
   )
-

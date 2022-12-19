@@ -4,3 +4,4 @@ run
 .ccls-cache
 .cache/clangd/index
 imgui.ini
+src/.stdafx.c++.pch
