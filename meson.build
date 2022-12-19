@@ -25,6 +25,9 @@ fonts_files = files(
   'src/shaders.cpp',
   'src/gui/views/triangle.cpp',
   'src/gui/drawable.cpp',
+  'src/instance_drawer.cpp',
+  'src/menu.cpp',
+
   './src/imgui_impl_glfw.cpp',
   './src/imgui_impl_opengl3.cpp',
 
@@ -59,5 +62,3 @@ fonts = executable(
     ]
   )
 
-run_target('run',
-command : './do')
