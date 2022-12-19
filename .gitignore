@@ -2,3 +2,5 @@
 compile_commands.json
 run
 .ccls-cache
+.cache/clangd/index
+imgui.ini
