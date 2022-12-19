@@ -8,7 +8,7 @@ project(
 
 fonts_files = files(
   'src/glad.c',
-  'src/gui/color.cpp',
+  'src/util/color.cpp',
   'src/gui/window.cpp',
   'src/gui/program.cpp',
   'src/gui/renderer.cpp',
@@ -27,6 +27,7 @@ fonts_files = files(
   'src/gui/drawable.cpp',
   'src/instance_drawer.cpp',
   'src/gui.cpp',
+  'src/wrappers/gl.cpp',
 
   './lib/imgui/imgui_impl_glfw.cpp',
   './lib/imgui/imgui_impl_opengl3.cpp',

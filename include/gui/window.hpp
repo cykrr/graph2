@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "input.hpp"
+#include "wrappers/glfw.hpp"
 
-GLFWwindow *initGLFW();
+glfw::Window *initGLFW();
 #endif

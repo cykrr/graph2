@@ -6,7 +6,7 @@
 
 #include "VAO.hpp"
 #include "VBO.hpp"
-#include "gui/color.hpp"
+#include "util/color.hpp"
 #include "gui/views/cube.hpp"
 #include "gui/views/triangle.hpp"
 #include "gui/window.hpp"
@@ -16,20 +16,22 @@
 #include "instance.hpp"
 
 #include "gui.hpp"
+#include "wrappers/gl.hpp"
+#include "wrappers/glfw.hpp"
 
 int main() {
   printf("TT_TT my take on OpenGL Engines\n");
-  GLFWwindow *window = initGLFW();
+  glfw::Window *window = initGLFW();
   GUI gui(window);
 
-  while (!glfwWindowShouldClose(window)) {
+  while (!window->should_close()) {
 
-    glClearColorHex("#202020"); // clear
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    gl::clear_color(Color("#202020")); // clear
+    glClear(gl::Bits::color_buffer | gl::Bits::depth_buffer);
 
     gui.render();
 
-    glfwSwapBuffers(window);
+    window->swap_buffers();
     glfwPollEvents();
   }
 }

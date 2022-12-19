@@ -1,10 +1,11 @@
 #include "gui/window.hpp"
-GLFWwindow *initGLFW()
+#include "wrappers/glfw.hpp"
+glfw::Window *initGLFW()
 {
-    glfwInit();
+    glfw::init();
 
-    GLFWwindow *window = glfwCreateWindow(
-            300, 300, "Pong", NULL, NULL);
+    this->window = new glfw::Window(
+            300, 300, "Pong");
 
     glfwWindowHint(
             GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -35,5 +36,5 @@ GLFWwindow *initGLFW()
     }
 
     // glEnable(GL_DEPTH_TEST);
-    return window;
+    return new Window(window);
 }
