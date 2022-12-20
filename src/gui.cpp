@@ -8,23 +8,11 @@ void GUI::render() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-  bool my_tool_active = true;
-  ImGui::Begin("My First Tool", &my_tool_active);
-  if (ImGui::Button("Add Triangle:")) {
-  }
-  if (ImGui::Button("Add Cube:")) {
-    // printf("press\n");
-    // cube_drawer->insert(new Instance<Cube>());
-  }
 
-  ImGui::Text("Elements:");
-  ImGui::BeginChild("Scrolling");
-  // cube_drawer->show();
-  ImGui::EndChild();
+  
 
   ImGui::End();
   ImGui::EndFrame();
-
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   }
