@@ -5,3 +5,5 @@ run
 .cache/clangd/index
 imgui.ini
 src/.stdafx.c++.pch
+out
+main.o
