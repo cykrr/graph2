@@ -16,7 +16,7 @@
 #include "gui.hpp"
 #include "wrappers/gl.hpp"
 #include "wrappers/glfw.hpp"
-
+  
 int main() {
   printf("TT_TT my take on OpenGL Engines\n");
   glfw::Window *window = initGLFW();

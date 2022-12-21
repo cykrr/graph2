@@ -7,3 +7,4 @@ imgui.ini
 src/.stdafx.c++.pch
 out
 main.o
+lib/imgui/.cache/clangd/index

@@ -7,6 +7,7 @@ project(
 
 
 fonts_files = files(
+  'main.cpp',
   'src/glad.c',
   'src/util/color.cpp',
   'src/gui/window.cpp',
@@ -28,23 +29,22 @@ fonts_files = files(
   'src/instance_drawer.cpp',
   'src/gui.cpp',
   'src/wrappers/gl.cpp',
-
-  './lib/imgui/imgui_impl_glfw.cpp',
-  './lib/imgui/imgui_impl_opengl3.cpp',
-
+  'src/wrappers/glfw.cpp',
 )
+
+subdir('lib/imgui')
 
 
 fonts = executable(
   'fonts',
-  [ fonts_files + 'src/main.cpp'],
+  [ fonts_files, imgui_files ],
   dependencies:[
     dependency('glfw3'),
     dependency('freetype2'),
-    dependency('imgui')
     ],
   include_directories: [
     include_directories('include'),
-    include_directories('lib')
+    include_directories('lib'),
+    imgui_include
     ]
   )
