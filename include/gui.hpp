@@ -9,6 +9,9 @@ public:
   void render();
 private :
   ImGuiIO * io;
+  unsigned int texture;
+  unsigned int fbo;
+  ImVec2 viewport_size;
   glfw::Window *window;
 };
 #endif
