@@ -29,40 +29,6 @@ GUI::GUI(glfw::Window *window) {
   }
 
 
-  unsigned int fbo;
-
-  glGenFramebuffers(1, &fbo);
-  this->fbo = fbo;
-  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-
-
-
-  unsigned int texture;
-
-  glGenTextures(1, &texture);
-  this->texture = texture;
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 600, 600, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, NULL);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                         texture, 0);
-
-  unsigned int rbo;
-
-  glGenRenderbuffers(1, &rbo);
-  glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 600, 600);
-
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
-                            GL_RENDERBUFFER, rbo);
-
-  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-  	printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 
 
 }
@@ -71,12 +37,11 @@ void GUI::render() {
 
   Cube cube;
   Program* shader = Shaders::get_shader("main");
+  m_viewport_window.bind_fbo();
   shader->use();
   shader->setMat4("m", glm::rotate(glm::mat4(1.f), ((float)ImGui::GetTime()), glm::vec3(0.f, 1.f, 1.f)));
-  glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-  glViewport(0, 0, viewport_size.x, viewport_size.y);
         // make sure we clear the framebuffer's content
-        glClearColor(0, 0,0, 0);
+        glClearColor(1.0, 0,0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         cube.draw();
         
@@ -103,6 +68,7 @@ void GUI::render() {
 	{
     first_time = false;
 
+    m_viewport_window.update_fbo();
 		ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
 		ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_DockSpace);
 		ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
@@ -122,16 +88,12 @@ void GUI::render() {
 	}
   ImGui::End();
 
+  m_viewport_window.draw();
+
   ImGui::Begin("Down");
     ImGui::Text("OLA");
   ImGui::End();
 
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-  ImGui::Begin("Viewport", NULL);
-    this->viewport_size = ImGui::GetWindowSize();
-    ImGui::Image((void*)texture, ImVec2(600, 600), ImVec2(0, 1), ImVec2(1, 0));
-    ImGui::End();
-    ImGui::PopStyleVar();
 
 
 

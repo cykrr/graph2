@@ -1,5 +1,6 @@
 #ifndef GUI_H
 #define GUI_H
+#include "gui/viewport_window.hpp"
 #include <GLFW/glfw3.h>
 #include "wrappers/glfw.hpp"
 #include "imgui/imgui.h"
@@ -9,9 +10,7 @@ public:
   void render();
 private :
   ImGuiIO * io;
-  unsigned int texture;
-  unsigned int fbo;
-  ImVec2 viewport_size;
   glfw::Window *window;
+  ViewportWindow m_viewport_window;
 };
 #endif
