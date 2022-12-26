@@ -5,8 +5,8 @@
 #include <map>
 class Shaders {
 public: 
-  static Program *get_shader(std::string shader_name);
+  static unsigned int get_shader(std::string shader_name);
 private:
-  static std::map<std::string, Program*> programs;
+  static std::map<std::string, unsigned int> programs;
 };
 #endif

@@ -1,19 +1,21 @@
 #include "shaders.hpp"
 
-std::map<std::string, Program*> Shaders::programs;
+std::map<std::string, unsigned int> Shaders::programs;
 
-Program *
+unsigned int
 Shaders::get_shader(std::string shader_name)
 {
-  std::map<std::string,Program *>::iterator it = programs.find(shader_name);
-  Program * program;
+  std::map<std::string,unsigned int>::iterator it = programs.find(shader_name);
+  unsigned int program_id;
   if(it != programs.end())
   {
     //element found;
-    program = it->second;
+    program_id = it->second;
   } else {
-    program = new Program(shader_name);
-    programs[shader_name] = program;
+    printf("%s no existe, creando\n", shader_name.c_str());
+    Program p(shader_name);
+    programs[shader_name] = p.get_id();
+    program_id = p.get_id();
   }
-  return program;
+  return program_id;
 }

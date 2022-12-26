@@ -28,6 +28,6 @@ protected:
   glm::mat4 model = glm::mat4(1.0f);
 
   glm::vec3 position; 
-  Program *shader = NULL;
+  Program shader;
 };
 #endif

@@ -16,7 +16,10 @@ class Program {
         const std::string & get_shader_name() {
           return this->shader_name;    
         }
+        unsigned int get_id() {return this->id;}
         Program(std::string name);
+        Program(unsigned int id) {this->id = id;}
+        ~Program(){}
         void use();
         void setBool(const std::string &name, bool value) const
         {         

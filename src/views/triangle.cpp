@@ -28,8 +28,8 @@ Triangle::Triangle() : Drawable("main")
 void 
 Triangle::draw()
 {
-  this->shader->use();
-  this->shader->setMat4("m", this->model);
+  this->shader.use();
+  this->shader.setMat4("m", this->model);
   vao->bind();
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }

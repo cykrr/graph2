@@ -25,7 +25,7 @@ VBO::send_data(size_t size, void *arr, GLenum draw_config)
 }
 
 VBO::~VBO() {
-  glDeleteBuffers(1, &this->id);
+  // glDeleteBuffers(1, &this->id);
 }
 
 void

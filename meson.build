@@ -32,7 +32,10 @@ fonts_files = files(
   'src/wrappers/glfw.cpp',
   'src/gui/viewport_window.cpp',
   'src/scene.cpp',
-  'src/entities/cube.cpp'
+  'src/gui/dock.cpp',
+  'src/entities/cube.cpp',
+  'src/entities/triangle.cpp',
+  'src/components/drawable.cpp'
 )
 
 subdir('lib/imgui')

@@ -25,9 +25,10 @@ Drawable::reset()
   this->model = glm::mat4(1.f);
 }
 
-Drawable::Drawable(const std::string  & shader_name)
+Drawable::Drawable(const std::string  & shader_name):
+  shader(Shaders::get_shader("main"))
 {
-  this->shader = Shaders::get_shader("main");
+
 }
 
 

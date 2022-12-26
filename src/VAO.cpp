@@ -1,5 +1,6 @@
 #include "VAO.hpp"
 #include "glad/glad.h"
+#include <cstdio>
 
 VAO::VAO()
 {
@@ -8,7 +9,7 @@ VAO::VAO()
 
 VAO::~VAO()
 {
-  glDeleteVertexArrays(1, &this->id);
+  // glDeleteVertexArrays(1, &this->id);
 }
 
 unsigned int VAO::get_id() const
