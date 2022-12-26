@@ -2,8 +2,8 @@
 #define TRIANGLE_H
 #include "VAO.hpp"
 #include "VBO.hpp"
-#include "gui/program.hpp"
-#include "gui/drawable.hpp"
+#include "program.hpp"
+#include "drawable.hpp"
 class Triangle  : public Drawable {
 public:
   Triangle();

@@ -1,4 +1,4 @@
-#include "gui/program.hpp"
+#include "program.hpp"
 
 void checkErrors(unsigned int id, std::string type)
 {

@@ -5,9 +5,9 @@
 #include "VAO.hpp"
 #include "VBO.hpp"
 #include "util/color.hpp"
-#include "gui/views/cube.hpp"
-#include "gui/views/triangle.hpp"
-#include "gui/window.hpp"
+#include "views/cube.hpp"
+#include "views/triangle.hpp"
+#include "window.hpp"
 #include "shaders.hpp"
 
 #include "instance_drawer.hpp"

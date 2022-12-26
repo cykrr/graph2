@@ -1,4 +1,4 @@
-#include "gui/views/plane.hpp"
+#include "views/plane.hpp"
 
 Plane::Plane() {
     this->program = new Program("plane");

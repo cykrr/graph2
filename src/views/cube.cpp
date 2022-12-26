@@ -1,4 +1,4 @@
-#include "gui/views/cube.hpp"
+#include "views/cube.hpp"
 
 float Cube::cubeVertices[] = {
     -0.5f, -0.5f, -0.5f,  

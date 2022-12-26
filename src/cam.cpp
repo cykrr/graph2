@@ -1,4 +1,4 @@
-#include "gui/cam.hpp"
+#include "cam.hpp"
 OrthographicCamera::OrthographicCamera(int width, int height)
 {
     update(width, height);

@@ -5,9 +5,9 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "gui.hpp"
 #include <cstdio>
-#include "gui/views/cube.hpp"
+#include "views/cube.hpp"
 #include "shaders.hpp"
-#include "gui/program.hpp"
+#include "program.hpp"
 
 bool handle_viewport_resize();
 
@@ -128,12 +128,10 @@ void GUI::render() {
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
   ImGui::Begin("Viewport", NULL);
-    if (!handle_viewport_resize()) {
-      ImGui::End();
-      ImGui::PopStyleVar();
-    }
     this->viewport_size = ImGui::GetWindowSize();
     ImGui::Image((void*)texture, ImVec2(600, 600), ImVec2(0, 1), ImVec2(1, 0));
+    ImGui::End();
+    ImGui::PopStyleVar();
 
 
 

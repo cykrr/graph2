@@ -2,7 +2,7 @@
 #define INPUT_H
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include "gui/renderer.hpp"
+#include "renderer.hpp"
 void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 
 void kbCallback(GLFWwindow *window,

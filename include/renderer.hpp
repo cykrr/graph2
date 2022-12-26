@@ -1,9 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 #define GLFW_INCLUDE_NONE
-#include "gui/program.hpp"
-#include "gui/element.hpp"
-#include "gui/cam.hpp"
+#include "program.hpp"
+#include "element.hpp"
+#include "cam.hpp"
 #include <vector>
 #include "glad/glad.h"
 class Renderer {

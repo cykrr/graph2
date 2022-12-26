@@ -1,7 +1,7 @@
 #ifndef PLANE_H
 #define PLANE_H
-#include "gui/element.hpp"
-#include "gui/program.hpp"
+#include "element.hpp"
+#include "program.hpp"
 
 class Plane : public Element {
     static float array[18];

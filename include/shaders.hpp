@@ -1,6 +1,6 @@
 #ifndef SHADERS_H
 #define SHADERS_H
-#include "gui/program.hpp"
+#include "program.hpp"
 #include <string>
 #include <map>
 class Shaders {

@@ -1,6 +1,6 @@
 #ifndef CUBE_H
 #define CUBE_H
-#include "gui/drawable.hpp"
+#include "drawable.hpp"
 class Cube : public Drawable {
     public:
     Cube();

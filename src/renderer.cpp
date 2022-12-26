@@ -1,4 +1,4 @@
-#include "gui/renderer.hpp"
+#include "renderer.hpp"
 
 Renderer::Renderer()
 {

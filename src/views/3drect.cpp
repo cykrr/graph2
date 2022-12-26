@@ -1,4 +1,4 @@
-#include "gui/views/3drect.hpp"
+#include "views/3drect.hpp"
 Rect3d::Rect3d() {
     this->vertices = 4;
     this->indices = 6;

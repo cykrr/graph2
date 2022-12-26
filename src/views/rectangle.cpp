@@ -1,4 +1,4 @@
-#include "gui/views/rectangle.hpp"
+#include "views/rectangle.hpp"
 #include <iostream>
 Rectangle::Rectangle(int x, int y, int w, int h) : 
     Element(x, y, w, h)

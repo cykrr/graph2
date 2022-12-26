@@ -1,4 +1,4 @@
-#include "gui/views/triangle.hpp"
+#include "views/triangle.hpp"
 #include "shaders.hpp"
 
 float Triangle::vertices[] =  {

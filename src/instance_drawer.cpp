@@ -30,5 +30,5 @@ template <class T> const glm::vec3 &Instance<T>::get_position() {
 //   ImGui::PopItemWidth();
 // }
 
-#include "gui/views/cube.hpp"
+#include "views/cube.hpp"
 template class InstanceDrawer<Cube>;

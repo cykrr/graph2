@@ -1,4 +1,4 @@
-#include "gui/input.hpp"
+#include "input.hpp"
 void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     Renderer *renderer = static_cast<Renderer *>
         (glfwGetWindowUserPointer(window));

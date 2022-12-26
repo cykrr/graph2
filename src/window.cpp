@@ -1,4 +1,4 @@
-#include "gui/window.hpp"
+#include "window.hpp"
 #include "wrappers/glfw.hpp"
 glfw::Window *initGLFW()
 {
