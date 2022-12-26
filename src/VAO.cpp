@@ -11,6 +11,11 @@ VAO::~VAO()
   glDeleteVertexArrays(1, &this->id);
 }
 
+unsigned int VAO::get_id() const
+{
+  return this->id;
+}
+
 /** Enables a vertex attribute (VA) . If access to a VA is disabled, it 
  *  will produce a constant value.
  *

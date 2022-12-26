@@ -16,6 +16,8 @@
 #include "gui.hpp"
 #include "wrappers/gl.hpp"
 #include "wrappers/glfw.hpp"
+
+#include "entt/entity/registry.hpp"
   
 int main() {
   printf("TT_TT my take on OpenGL Engines\n");

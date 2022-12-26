@@ -30,6 +30,7 @@ void Program::use()
 
 Program::Program(std::string name)
 {
+    this->shader_name = name;
     unsigned int vertex, frag;
 
     std::ifstream vertexFile, fragFile;

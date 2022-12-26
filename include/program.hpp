@@ -9,9 +9,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 class Program {
-    public:
-        Program(std::string name);
+    private:
         unsigned int id;
+        std::string shader_name;
+    public:
+        const std::string & get_shader_name() {
+          return this->shader_name;    
+        }
+        Program(std::string name);
         void use();
         void setBool(const std::string &name, bool value) const
         {         
