@@ -8,6 +8,7 @@ class Cube : public Drawable {
     static const char *get_name() {
         return "Cube";
     }
+    static const float * get_vert() {return cubeVertices;}
     private:
     static float cubeVertices[];
 };

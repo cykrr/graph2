@@ -4,6 +4,7 @@
 class VAO {
   public:
     unsigned int get_id() const;
+    VAO(unsigned int vao) {this->id = vao;}
     VAO();
     ~VAO();
     void enable_vertex_attr_array(const int idx);

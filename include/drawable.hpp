@@ -18,6 +18,7 @@ class Drawable {
   // virtual void update() = 0;
   virtual void draw() = 0;
   virtual ~Drawable(){};
+  unsigned int get_vao() {return vao->get_id();}
 
   const char * name = "Drawable";
 
