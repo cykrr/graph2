@@ -1,11 +1,10 @@
 #include "window.hpp"
-#include "wrappers/glfw.hpp"
-glfw::Window *initGLFW()
+#include "GLFW/glfw3.h"
+GLFWwindow *initGLFW()
 {
-  glfw::init();
+  glfwInit();
 
-  glfw::Window *w = new glfw::Window(
-            300, 300, "Pong");
+  GLFWwindow *w = glfwCreateWindow(800, 600, "fons", NULL,NULL);
 
   glfwWindowHint(
       GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -17,13 +16,11 @@ glfw::Window *initGLFW()
 
   // glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
 
-  w->make_current_context();
-
-  // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+  glfwMakeContextCurrent(w);
   // glfwSetCursorPosCallback(window, mouseCallback);
 
 
-  w->set_framebuffer_size_callback(
+  glfwSetFramebufferSizeCallback(w, 
       [](GLFWwindow *win, int w, int h) {
         glViewport(0, 0, w, h);
       });

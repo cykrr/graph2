@@ -22,7 +22,7 @@
 bool handle_viewport_resize();
 
 
-GUI::GUI(glfw::Window *window) : m_window(window) {
+GUI::GUI(GLFWwindow *window) {
 
   ImGui::CreateContext();
   ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -30,7 +30,7 @@ GUI::GUI(glfw::Window *window) : m_window(window) {
   // this->io->ConfigDockingWithShift = true;
 
   // setup platform/renderer bindings
-  if (!ImGui_ImplGlfw_InitForOpenGL(window->window, true)) {
+  if (!ImGui_ImplGlfw_InitForOpenGL(window, true)) {
     printf("Error init glfw imgui\n");
   }
   if (!ImGui_ImplOpenGL3_Init("#version 330 core")) {

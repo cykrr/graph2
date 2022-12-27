@@ -9,7 +9,7 @@
 
 class GUI {
 public:
-  GUI(glfw::Window *w);
+  GUI(GLFWwindow *w);
   void render();
 private :
         ImGuiIO * m_io;

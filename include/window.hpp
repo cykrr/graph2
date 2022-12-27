@@ -6,5 +6,5 @@
 #include "input.hpp"
 #include "wrappers/glfw.hpp"
 
-glfw::Window *initGLFW();
+GLFWwindow *initGLFW();
 #endif

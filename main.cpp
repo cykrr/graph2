@@ -21,17 +21,17 @@
   
 int main() {
   printf("TT_TT my take on OpenGL Engines\n");
-  glfw::Window *window = initGLFW();
+  GLFWwindow *window = initGLFW();
   GUI gui(window);
 
-  while (!window->should_close()) {
-
-    gl::clear_color(Color("#202020")); // clear
+  while (!glfwWindowShouldClose(window)){
+    Color clear_color("#202020");
+    glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a); // clear
     glClear(gl::Bits::color_buffer | gl::Bits::depth_buffer);
 
     gui.render();
 
-    window->swap_buffers();
+    glfwSwapBuffers(window);
     glfwPollEvents();
   }
 }
