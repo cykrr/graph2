@@ -27,15 +27,21 @@ fonts_files = files(
   'src/views/triangle.cpp',
   'src/drawable.cpp',
   'src/instance_drawer.cpp',
-  'src/gui.cpp',
+
   'src/wrappers/gl.cpp',
   'src/wrappers/glfw.cpp',
-  'src/gui/viewport_window.cpp',
+
   'src/scene.cpp',
-  'src/gui/dock.cpp',
   'src/entities/cube.cpp',
   'src/entities/triangle.cpp',
-  'src/components/drawable.cpp'
+  'src/components/drawable.cpp',
+
+  'src/gui.cpp',
+
+  'src/gui/dock.cpp',
+  'src/gui/viewport_window.cpp',
+
+  'src/gui/views/entity_view.cpp',
 )
 
 subdir('lib/imgui')

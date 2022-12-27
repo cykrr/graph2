@@ -1,12 +1,15 @@
+#include <cstdio>
+#include <entt/entity/fwd.hpp>
+#include <entt/entity/registry.hpp>
+
 #include "glad/glad.h"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
-#include "gui.hpp"
-#include <cstdio>
-#include <entt/entity/fwd.hpp>
-#include <entt/entity/registry.hpp>
+
+
 #include "views/cube.hpp"
 #include "views/triangle.hpp"
 #include "shaders.hpp"
@@ -19,8 +22,7 @@
 #include "entities/cube.hpp"
 #include "entities/triangle.hpp"
 
-bool handle_viewport_resize();
-
+#include "gui.hpp"
 
 GUI::GUI(GLFWwindow *window) {
 
@@ -41,14 +43,15 @@ GUI::GUI(GLFWwindow *window) {
 void GUI::render() {
   auto draw_view = m_scene.m_registry.view<NameComponent,DrawableComponent>();
   m_viewport_window.bind_fbo();
-  glClearColor(.2, .2,.2, 1.0);
+  Color clear("#202020");
+  glClearColor(clear.x, clear.y, clear.z, clear.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   draw_view.each([](NameComponent &name, struct DrawableComponent &drawable){
 
-    draw_component(drawable);
-  });
-        
+                   draw_component(drawable);
+                 });
+
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   ImGui_ImplOpenGL3_NewFrame();
@@ -58,108 +61,18 @@ void GUI::render() {
   m_dockspace.update();
   m_viewport_window.update_fbo();
 
+  entity_view_draw(m_scene.m_registry);
   m_viewport_window.draw();
 
-  entity_view_draw(m_scene.m_registry);
+  // Update and Render ImGUI
 
-  // Update and Render additional Platform Windows
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   GLFWwindow* backup_current_context = glfwGetCurrentContext();
   if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
   {
-      ImGui::UpdatePlatformWindows();
-      ImGui::RenderPlatformWindowsDefault();
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
   }
   glfwMakeContextCurrent(backup_current_context);
 }
-
-
-void GUI::entity_view_draw(entt::registry &r)
-{
-  ImGui::Begin("Entities");
-    ImGui::Text("Create entity:");
-    std::tuple<const char *, entity_fn_t> entity_desc =  entity_type_picker_draw(r);
-    static Color color("#00ff00");
-    // static bool send_color = false;
-    if (ImGui::ColorEdit3("Color", &color.r, ImGuiColorEditFlags_DisplayHex |
-                      ImGuiColorEditFlags_InputRGB |
-                      ImGuiColorEditFlags_NoAlpha)) {
-      // send_color = true;
-
-    }
-
-    char buf[50] = "";
-    if (
-      ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue) &&
-      strlen(buf) != 0 
-    ) {
-      entt::entity e = std::get<1>(entity_desc)(r);
-      const char * n = std::get<0>(entity_desc);
-      NameComponent nc(buf,  n);
-
-      m_scene.m_registry.emplace<NameComponent>(e, nc);
-      // if(send_color) {
-        printf("sendin\n");
-        DrawableComponent & c = r.get<DrawableComponent>(e);
-        c.m_color = color;
-
-      // }
-    }
-
-    static entt::entity selection;
-    static bool selected = false;
-    if (ImGui::BeginListBox("Entities")) {
-      auto view = r.view<NameComponent, DrawableComponent>();
-      (view.each([](const auto & ent, auto &name, auto &drawable) {
-                   if (ImGui::Selectable(name.m_name)) {
-                     selected = true;
-                     selection = ent;
-                   }
-                 }));
-      ImGui::EndListBox();
-    }
-  ImGui::End();
-  if (selected) {
-    ImGui::Begin("SelectedEntity");
-      DrawableComponent & dc = m_scene.m_registry.get<DrawableComponent>(selection);
-      NameComponent & nc = m_scene.m_registry.get<NameComponent>(selection);
-      ImGui::Text("Name: %s", nc.m_name); 
-      ImGui::Text("Type: %s", nc.m_type); 
-
-    if (ImGui::ColorEdit3("Color", &dc.m_color.r, ImGuiColorEditFlags_DisplayHex |
-                      ImGuiColorEditFlags_InputRGB |
-                      ImGuiColorEditFlags_NoAlpha)) {
-    }
-
-    ImGui::End();
-}
-
-
-std::tuple<const char *, entity_fn_t> GUI::entity_type_picker_draw(entt::registry & r)
-{
-  static const char * items_str[] = {"Triangle", "Cube"};
-
-  const entity_fn_t items_func[10] = {create_triangle, create_cube};
-  static entity_fn_t current_func = NULL;
-
-  static int item_current = 0;
-
-  ImGui::Combo("Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
-  current_func = items_func[item_current];
-  return std::tuple<const char *, entity_fn_t>(items_str[item_current], current_func);
-  0;
-}
-
-    // printf("%f %f %f %f\n",
-    //        color.r ,
-    //        color.g ,
-    //        color.b ,
-    //        color.a);
-//
-    // printf("Creado %s\n", name.m_name);
-    // printf("%f %f %f %f\n",
-    //        drawable.m_color.r ,
-    //        drawable.m_color.g ,
-    //        drawable.m_color.b ,
-    //        drawable.m_color.a);
