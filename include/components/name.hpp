@@ -7,8 +7,9 @@ struct NameComponent
   NameComponent(NameComponent &&) = default;
   NameComponent(const NameComponent &) = default;
   ~NameComponent() = default;
-  NameComponent(char *name) {strcpy(this->name, name);}
-  char name[50];
+  NameComponent(char *name, const char *type) {strcpy(m_name, name); strcpy(m_type, type);}
+  char m_name[50];
+  char m_type[50];
 };
 
 #endif

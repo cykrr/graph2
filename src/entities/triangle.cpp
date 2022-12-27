@@ -12,8 +12,11 @@ entt::entity create_triangle(entt::registry & r) {
   static VAO vao;
   static VBO vbo(BufferType::array_buffer);
   DrawableComponent component = {
-    "main",
-     vao.get_id(), 3};
+    Shaders::get_shader("main"),
+    vao.get_id(),
+    3,
+    Color("#ffffff")
+  };
 
   vao.bind();
   vbo.bind_buffer();

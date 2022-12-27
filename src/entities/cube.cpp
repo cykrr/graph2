@@ -47,7 +47,11 @@ entt::entity create_cube(entt::registry & r)
   static VBO vbo(BufferType::array_buffer);
 
   DrawableComponent component = {
-    "main", vao.get_id(), 108};
+    Shaders::get_shader("main"),
+    vao.get_id(),
+    108,
+    Color("#000000")
+  };
 
   vao.bind();
   vbo.bind_buffer();
