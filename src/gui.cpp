@@ -55,36 +55,12 @@ void GUI::render() {
   ImGui::NewFrame();
 
   m_dockspace.update();
-
   m_viewport_window.update_fbo();
 
   m_viewport_window.draw();
 
-  static const char * items_str[] = {"Triangle", "Cube"};
-  entt::entity(*const items_func[10])(entt::registry &) = {create_triangle, create_cube};
-  static entt::entity(*current_func)(entt::registry &) = NULL;
-  static int item_current = 0;
+  entity_view_draw(m_scene.m_registry);
 
-  ImGui::Begin("Entities");
-  char buf[50] = "";
-  ImGui::Text("Create entity:");
-  ImGui::Combo("Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
-  current_func = items_func[item_current];
-  if (ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue)) {
-    entt::entity e = current_func(m_scene.m_registry);
-    m_scene.m_registry.emplace<NameComponent>(e, buf);
-    printf("Creado %s %d\n", buf, e);
-  }
-  if (ImGui::BeginListBox("Entities")) {
-    auto view = m_scene.m_registry.view<NameComponent, DrawableComponent>();
-    (view.each([](const auto & ent, auto &name, auto &drawable) {
-                 if (ImGui::Selectable(name.name.c_str())) {
-    
-                 }
-               }));
-    ImGui::EndListBox();
-  }
-  ImGui::End();
   // Update and Render additional Platform Windows
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -97,7 +73,45 @@ void GUI::render() {
   glfwMakeContextCurrent(backup_current_context);
 }
 
-bool handle_viewport_resize() {
-  return false;
+
+void GUI::entity_view_draw(entt::registry &r)
+{
+  ImGui::Begin("Entities");
+  char buf[50] = "";
+  ImGui::Text("Create entity:");
+  entity_fn_t entity_fn =  entity_type_picker_draw(r);
+  if (
+    ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue) &&
+    strlen(buf) != 0 
+  ) {
+    entt::entity e = entity_fn(r);
+    m_scene.m_registry.emplace<NameComponent>(e, buf);
+    // printf("Creado %s %d\n", buf, e);
+  }
+
+  if (ImGui::BeginListBox("Entities")) {
+    auto view = r.view<NameComponent, DrawableComponent>();
+    (view.each([](const auto & ent, auto &name, auto &drawable) {
+                 if (ImGui::Selectable(name.name.c_str())) {
+    
+                 }
+               }));
+    ImGui::EndListBox();
+  }
+  ImGui::End();
 }
 
+
+entity_fn_t GUI::entity_type_picker_draw(entt::registry & r)
+{
+  static const char * items_str[] = {"Triangle", "Cube"};
+
+  const entity_fn_t items_func[10] = {create_triangle, create_cube};
+  static entity_fn_t current_func = NULL;
+
+  static int item_current = 0;
+
+  ImGui::Combo("Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
+  current_func = items_func[item_current];
+  return current_func;
+}
