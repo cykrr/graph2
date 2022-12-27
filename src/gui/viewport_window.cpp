@@ -10,12 +10,7 @@ ViewportWindow::ViewportWindow() {
 void ViewportWindow::draw() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
   ImGui::Begin("Viewport", NULL);
-  this->m_viewport_size = ImGui::GetWindowSize();
-  if(this->m_viewport_size.x + this->m_viewport_size.y != 0) {
-      this->update_fbo();
-
-  }
-
+  this->m_viewport_size = ImGui::GetContentRegionAvail();
     ImGui::Image((void*)m_color_texture,
                  ImVec2(m_viewport_size.x, m_viewport_size.y),
                  ImVec2(0, 1), ImVec2(1, 0));
