@@ -58,6 +58,11 @@ class Program {
         { 
             glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); 
         }
+
+        static void setVec4_id(unsigned int id, const std::string &name, const glm::vec4 &value)
+        { 
+            glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); 
+        }
         void setVec4(const std::string &name, float x, float y, float z, float w) 
         { 
             glUniform4f(glGetUniformLocation(id, name.c_str()), x, y, z, w); 
@@ -74,6 +79,11 @@ class Program {
         }
         // ------------------------------------------------------------------------
         void setMat4(const std::string &name, const glm::mat4 &mat) const
+        {
+            glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+        }
+
+        static void setMat4_id(unsigned int id, const std::string &name, const glm::mat4 &mat)
         {
             glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
         }

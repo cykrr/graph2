@@ -45,6 +45,7 @@ void GUI::render() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   draw_view.each([](NameComponent &name, struct DrawableComponent &drawable){
+
     draw_component(drawable);
   });
         
@@ -77,29 +78,62 @@ void GUI::render() {
 void GUI::entity_view_draw(entt::registry &r)
 {
   ImGui::Begin("Entities");
-  ImGui::Text("Create entity:");
-  entity_fn_t entity_fn =  entity_type_picker_draw(r);
+    ImGui::Text("Create entity:");
+    std::tuple<const char *, entity_fn_t> entity_desc =  entity_type_picker_draw(r);
+    static ImVec4 col(0,0,0,1.);
+    static Color color("#00ff00");
+    // static bool send_color = false;
+    if (ImGui::ColorEdit3("Color", &col.x, ImGuiColorEditFlags_DisplayHex |
+                      ImGuiColorEditFlags_InputRGB |
+                      ImGuiColorEditFlags_NoAlpha)) {
+    color = Color(col);
+      // send_color = true;
 
-  char buf[50] = "";
-  if (
-    ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue) &&
-    strlen(buf) != 0 
-  ) {
-    entt::entity e = entity_fn(r);
-    m_scene.m_registry.emplace<NameComponent>(e, buf);
-    // printf("Creado %s %d\n", buf, e);
-  }
+    }
 
-  if (ImGui::BeginListBox("Entities")) {
-    auto view = r.view<NameComponent, DrawableComponent>();
-    (view.each([](const auto & ent, auto &name, auto &drawable) {
-                 if (ImGui::Selectable(name.name)) {
-    
-                 }
-               }));
-    ImGui::EndListBox();
-  }
+    char buf[50] = "";
+    if (
+      ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue) &&
+      strlen(buf) != 0 
+    ) {
+      entt::entity e = std::get<1>(entity_desc)(r);
+      const char * n = std::get<0>(entity_desc);
+      NameComponent nc(buf,  n);
+
+      m_scene.m_registry.emplace<NameComponent>(e, nc);
+      // if(send_color) {
+        printf("sendin\n");
+        DrawableComponent & c = r.get<DrawableComponent>(e);
+        c.m_color = color;
+
+      // }
+    }
+
+    static entt::entity selection;
+    static bool selected = false;
+    if (ImGui::BeginListBox("Entities")) {
+      auto view = r.view<NameComponent, DrawableComponent>();
+      (view.each([](const auto & ent, auto &name, auto &drawable) {
+                   if (ImGui::Selectable(name.m_name)) {
+                     selected = true;
+                     selection = ent;
+                   }
+                 }));
+      ImGui::EndListBox();
+    }
   ImGui::End();
+  if (selected) {
+    ImGui::Begin("SelectedEntity");
+      DrawableComponent & dc = m_scene.m_registry.get<DrawableComponent>(selection);
+      NameComponent & nc = m_scene.m_registry.get<NameComponent>(selection);
+      ImGui::Text("Name: %s", nc.m_name); 
+      ImGui::Text("Type: %s", nc.m_type); 
+
+      ImGui::Text("Color:"); ImGui::SameLine();
+      ImGui::ColorButton("Color", (ImVec4){dc.m_color.r, dc.m_color.g, dc.m_color.b, dc.m_color.a});
+    ImGui::End();
+  }
+
 }
 
 
@@ -116,3 +150,16 @@ std::tuple<const char *, entity_fn_t> GUI::entity_type_picker_draw(entt::registr
   current_func = items_func[item_current];
   return std::tuple<const char *, entity_fn_t>(items_str[item_current], current_func);
 }
+
+    // printf("%f %f %f %f\n",
+    //        color.r ,
+    //        color.g ,
+    //        color.b ,
+    //        color.a);
+//
+    // printf("Creado %s\n", name.m_name);
+    // printf("%f %f %f %f\n",
+    //        drawable.m_color.r ,
+    //        drawable.m_color.g ,
+    //        drawable.m_color.b ,
+    //        drawable.m_color.a);
