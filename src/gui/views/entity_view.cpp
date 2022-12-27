@@ -12,7 +12,7 @@ void GUI::entity_view_draw(entt::registry &r)
   ImGui::Begin("Entities");
   ImGui::Text("Create entity:");
   std::tuple<const char *, entity_fn_t> entity_desc =  entity_type_picker_draw(r);
-  static Color color("#00ff00");
+  static Color color("#202020");
   // static bool send_color = false;
   if (ImGui::ColorEdit3("Color", &color.r, ImGuiColorEditFlags_DisplayHex |
                         ImGuiColorEditFlags_InputRGB |
@@ -54,11 +54,16 @@ void GUI::entity_view_draw(entt::registry &r)
     NameComponent & nc = m_scene.m_registry.get<NameComponent>(selection);
     ImGui::Text("Name: %s", nc.m_name); 
     ImGui::Text("Type: %s", nc.m_type); 
+    ImGui::Text("VAO id: %d", dc.m_vao); 
+    ImGui::Text("Shader id: %d", dc.m_shader); 
+    ImGui::Text("Vertex count: %d", dc.m_vert_count); 
 
     if (ImGui::ColorEdit3("Color", &dc.m_color.r, ImGuiColorEditFlags_DisplayHex |
                           ImGuiColorEditFlags_InputRGB |
                           ImGuiColorEditFlags_NoAlpha)) {
     }
+
+    ImGui::Checkbox("Wireframe", &dc.m_show_wireframe);
 
     ImGui::End();
   }
