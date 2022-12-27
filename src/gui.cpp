@@ -77,9 +77,10 @@ void GUI::render() {
 void GUI::entity_view_draw(entt::registry &r)
 {
   ImGui::Begin("Entities");
-  char buf[50] = "";
   ImGui::Text("Create entity:");
   entity_fn_t entity_fn =  entity_type_picker_draw(r);
+
+  char buf[50] = "";
   if (
     ImGui::InputText("name", buf, 50,ImGuiInputTextFlags_EnterReturnsTrue) &&
     strlen(buf) != 0 
@@ -92,7 +93,7 @@ void GUI::entity_view_draw(entt::registry &r)
   if (ImGui::BeginListBox("Entities")) {
     auto view = r.view<NameComponent, DrawableComponent>();
     (view.each([](const auto & ent, auto &name, auto &drawable) {
-                 if (ImGui::Selectable(name.name.c_str())) {
+                 if (ImGui::Selectable(name.name)) {
     
                  }
                }));
