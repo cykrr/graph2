@@ -1,5 +1,6 @@
 #ifndef DRAWABLE_COMPONENT_H
 #define DRAWABLE_COMPONENT_H
+#include "model.hpp"
 #include "program.hpp"
 #include "VAO.hpp"
 #include "shaders.hpp"
@@ -20,6 +21,6 @@ struct DrawableComponent
   ~DrawableComponent() = default;
 };
 
-extern void draw_component(DrawableComponent &);
+extern void draw_component(DrawableComponent &, ModelComponent &);
 
 #endif

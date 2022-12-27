@@ -16,8 +16,10 @@
 #include "program.hpp"
 
 #include "components/name.hpp"
+#include "components/model.hpp"
 #include "components/view_proj.hpp"
 #include "components/drawable.hpp"
+#include "components/rotation.hpp"
 
 #include "entities/cube.hpp"
 #include "entities/triangle.hpp"
@@ -42,14 +44,25 @@ GUI::GUI(GLFWwindow *window) {
 
 void GUI::render() {
   // Render Scene
-  auto draw_view = m_scene.m_registry.view<NameComponent,DrawableComponent>();
   m_viewport_window.bind_fbo();
-  Color clear("#202020");
+  Color clear("#656565");
   glClearColor(clear.x, clear.y, clear.z, clear.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  draw_view.each([](NameComponent &name, struct DrawableComponent &drawable){
-                   draw_component(drawable);
-                 });
+
+  auto rotation_view = m_scene.m_registry.view<RotationComponent, ModelComponent>();
+  auto draw_view = m_scene.m_registry.view<DrawableComponent, ModelComponent>();
+
+  rotation_view.each(
+      [](RotationComponent & rc, ModelComponent & mc) {
+          if(rc.axis.x + rc.axis.y + rc.axis.z)
+            mc.matrix = glm::rotate(glm::mat4(1.f), rc.radians, rc.axis);
+      });
+
+  draw_view.each(
+      [](const entt::entity & ent, struct DrawableComponent &drawable, struct ModelComponent &model){
+        draw_component(drawable, model);
+      });
+
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   // Begin frame
@@ -57,13 +70,15 @@ void GUI::render() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
+
+  // Update views
   m_dockspace.update();
   m_viewport_window.update_fbo();
 
   // Draw child views
 
-  entity_view_draw(m_scene.m_registry);
   m_viewport_window.draw();
+  entity_view_draw(m_scene.m_registry);
 
   // Update and Render ImGUI
 

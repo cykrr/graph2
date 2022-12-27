@@ -8,11 +8,12 @@ void Dock::create() {
 void Dock::update() {
 
   ImGuiViewport* m_viewport_ptr = ImGui::GetMainViewport();
+  ImGui::SetNextWindowPos(m_viewport_ptr->Pos);
+  ImGui::SetNextWindowSize(m_viewport_ptr->Size);
 
   ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
   ImGui::SetNextWindowSize(m_viewport_ptr->Size);
   ImGui::SetNextWindowPos(m_viewport_ptr->Pos);
-
   ImGui::Begin("DockSpace", NULL, window_flags);
 
   ImGuiID dockspace_id = ImGui::GetID("DockSpace");
@@ -49,7 +50,7 @@ void Dock::update() {
 
 
 		// we now dock our windows into the docking node we made above
-		ImGui::DockBuilderDockWindow("Down", m_dock_down);
+		// ImGui::DockBuilderDockWindow("Down", m_dock_down);
 		ImGui::DockBuilderDockWindow("Entities", m_dock_left);
 		ImGui::DockBuilderDockWindow("Viewport", m_dock_up);
     ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_down);

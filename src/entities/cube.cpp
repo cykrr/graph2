@@ -1,5 +1,7 @@
 #include "entities/cube.hpp"
 #include "components/drawable.hpp"
+#include "components/rotation.hpp"
+#include "components/model.hpp"
 #include "VBO.hpp"
 
 static float l_cubeVertices[] = {
@@ -46,12 +48,6 @@ entt::entity create_cube(entt::registry & r)
   static VAO vao;
   static VBO vbo(BufferType::array_buffer);
 
-  DrawableComponent component = {
-    Shaders::get_shader("main"),
-    vao.get_id(),
-    108,
-    Color("#000000")
-  };
 
   vao.bind();
   vbo.bind_buffer();
@@ -61,8 +57,18 @@ entt::entity create_cube(entt::registry & r)
 
   vbo.unbind();
   vao.unbind();
+
   entt::entity e =r.create();
-  r.emplace<DrawableComponent>(e, component);
+
+  r.emplace<ModelComponent>(e, (ModelComponent){glm::mat4(1.f)});
+  r.emplace<RotationComponent>(e, (RotationComponent){glm::vec3(0.f), 0});
+  r.emplace<DrawableComponent>(e, (DrawableComponent) {
+                                 Shaders::get_shader("main"),
+                                 vao.get_id(),
+                                 108,
+                                 Color("#000000")
+                               });
+
   return e;
 }
 
