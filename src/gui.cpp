@@ -80,13 +80,11 @@ void GUI::entity_view_draw(entt::registry &r)
   ImGui::Begin("Entities");
     ImGui::Text("Create entity:");
     std::tuple<const char *, entity_fn_t> entity_desc =  entity_type_picker_draw(r);
-    static ImVec4 col(0,0,0,1.);
     static Color color("#00ff00");
     // static bool send_color = false;
-    if (ImGui::ColorEdit3("Color", &col.x, ImGuiColorEditFlags_DisplayHex |
+    if (ImGui::ColorEdit3("Color", &color.r, ImGuiColorEditFlags_DisplayHex |
                       ImGuiColorEditFlags_InputRGB |
                       ImGuiColorEditFlags_NoAlpha)) {
-    color = Color(col);
       // send_color = true;
 
     }
@@ -129,11 +127,12 @@ void GUI::entity_view_draw(entt::registry &r)
       ImGui::Text("Name: %s", nc.m_name); 
       ImGui::Text("Type: %s", nc.m_type); 
 
-      ImGui::Text("Color:"); ImGui::SameLine();
-      ImGui::ColorButton("Color", (ImVec4){dc.m_color.r, dc.m_color.g, dc.m_color.b, dc.m_color.a});
-    ImGui::End();
-  }
+    if (ImGui::ColorEdit3("Color", &dc.m_color.r, ImGuiColorEditFlags_DisplayHex |
+                      ImGuiColorEditFlags_InputRGB |
+                      ImGuiColorEditFlags_NoAlpha)) {
+    }
 
+    ImGui::End();
 }
 
 
@@ -149,6 +148,7 @@ std::tuple<const char *, entity_fn_t> GUI::entity_type_picker_draw(entt::registr
   ImGui::Combo("Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
   current_func = items_func[item_current];
   return std::tuple<const char *, entity_fn_t>(items_str[item_current], current_func);
+  0;
 }
 
     // printf("%f %f %f %f\n",
