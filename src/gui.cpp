@@ -103,7 +103,7 @@ void GUI::entity_view_draw(entt::registry &r)
 }
 
 
-entity_fn_t GUI::entity_type_picker_draw(entt::registry & r)
+std::tuple<const char *, entity_fn_t> GUI::entity_type_picker_draw(entt::registry & r)
 {
   static const char * items_str[] = {"Triangle", "Cube"};
 
@@ -114,5 +114,5 @@ entity_fn_t GUI::entity_type_picker_draw(entt::registry & r)
 
   ImGui::Combo("Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
   current_func = items_func[item_current];
-  return current_func;
+  return std::tuple<const char *, entity_fn_t>(items_str[item_current], current_func);
 }

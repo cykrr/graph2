@@ -21,7 +21,7 @@ private:
              Dock m_dockspace;
 
                void entity_view_draw(entt::registry &r);
-          entity_fn_t entity_type_picker_draw(entt::registry &);
+          std::tuple<const char *, entity_fn_t> entity_type_picker_draw(entt::registry &);
 
 };
 #endif
