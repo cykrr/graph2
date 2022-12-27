@@ -39,31 +39,28 @@ GUI::GUI(GLFWwindow *window) {
 }
 
 void GUI::render() {
-
-
-  // Cube cube;
+  auto draw_view = m_scene.m_registry.view<NameComponent,DrawableComponent>();
   m_viewport_window.bind_fbo();
   glClearColor(.2, .2,.2, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  auto v = m_scene.m_registry.view<NameComponent,DrawableComponent>();
-  // cube.draw();
-  v.each([](NameComponent &name, struct DrawableComponent &drawable){
 
-    printf("%s\n", name.name.c_str());
+  draw_view.each([](NameComponent &name, struct DrawableComponent &drawable){
     draw_component(drawable);
   });
-  putchar('\n');
         
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
+
   m_dockspace.update();
+
   m_viewport_window.update_fbo();
+
   m_viewport_window.draw();
 
-  const char * items_str[] = {"Triangle", "Cube"};
+  static const char * items_str[] = {"Triangle", "Cube"};
   entt::entity(*const items_func[10])(entt::registry &) = {create_triangle, create_cube};
   static entt::entity(*current_func)(entt::registry &) = NULL;
   static int item_current = 0;
