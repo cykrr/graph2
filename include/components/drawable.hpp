@@ -6,10 +6,13 @@
 #include "util/color.hpp"
 struct DrawableComponent
 {
+
   unsigned int m_shader;
   unsigned int m_vao;
   unsigned int m_vert_count;
+
   Color m_color;
+  bool m_show_wireframe;
 
   DrawableComponent() = default;
   DrawableComponent(DrawableComponent &&) = default;

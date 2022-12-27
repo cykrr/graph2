@@ -2,9 +2,10 @@
 #include "components/drawable.hpp"
  void draw_component(DrawableComponent & d)
 {
-        // printf("shader: %d\n", d.m_shader.get_id());
-        // printf("vao: %d\n", d.m_vao.get_id());
-        // printf("vert: %d\n", d.m_vert_count);
+        if (d.m_show_wireframe)
+          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else
+          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glUseProgram(d.m_shader);
         Program::setMat4_id(d.m_shader, "m", glm::mat4(1.f));
         Program::setVec4_id(d.m_shader, "color", d.m_color);
