@@ -2,13 +2,30 @@
 #define COLOR_H
 #include "glad/glad.h"
 #include <string>
+#include "glm/vec4.hpp"
+#include "imgui/imgui.h"
 void glClearColorHex(std::string fmt);
-class Color {
+class Color : public glm::vec<4, float> {
 public:
-  int r, g, b, a;
   Color(const std::string & hex);
-  Color(int r, int g, int b);
-  Color (int r, int g, int b, int a);
+  Color(ImVec4 &c){
+    this->r = c.x;
+    this->g = c.y;
+    this->b = c.z;
+    this->a = c.w;
+  }
+
+  Color(unsigned int r, unsigned int g, unsigned int b)  {
+    this->r = (float)r;
+    this->g = (float)g;
+    this->b = (float)b;
+    this->a = 1.f;
+  }
+
+  Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a): Color(r,g,b) {
+    this->a = (float)a/0xff;
+  }
+
   void set_alpha(float a);
 };
 
