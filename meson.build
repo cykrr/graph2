@@ -45,7 +45,9 @@ fonts_files = files(
   'src/gui/dock.cpp',
   'src/gui/viewport_window.cpp',
 
-  'src/gui/views/entity_view.cpp',
+  'src/gui/views/entity/create.cpp',
+  'src/gui/views/entity/picker.cpp',
+  'src/gui/views/entity/view.cpp',
 )
 
 subdir('lib/imgui')

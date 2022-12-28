@@ -4,7 +4,6 @@
 
 class Dock {
 public:
-  void create();
   void update();
   unsigned int 
     m_dockspace_id,

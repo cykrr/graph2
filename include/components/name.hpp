@@ -1,6 +1,7 @@
 #ifndef NAME_COMPONENT_H
 #define NAME_COMPONENT_H
 #include <string.h>
+// Allow entities to be identified by GUI
 struct NameComponent
 {
   NameComponent() = default;

@@ -1,3 +1,4 @@
+#include "glad/glad.h"
 #include "window.hpp"
 #include "GLFW/glfw3.h"
 GLFWwindow *initGLFW()
@@ -29,7 +30,7 @@ GLFWwindow *initGLFW()
     if(!gladLoadGLLoader(
         (GLADloadproc)glfwGetProcAddress)
     ){
-        std::cout << "Error loading GLAD\n";
+        // std::cout << "Error loading GLAD\n";
     }
 
     // glEnable(GL_DEPTH_TEST);

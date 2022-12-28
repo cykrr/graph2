@@ -6,7 +6,6 @@
 #include "scene.hpp"
 #include "gui/dock.hpp"
 
-typedef  entt::entity(*entity_fn_t)(entt::registry &);
 
 class GUI {
 public:

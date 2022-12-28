@@ -26,8 +26,8 @@
 #include "entities/triangle.hpp"
 
 #include "gui.hpp"
+#include "gui/views/entity.hpp"
 
-void entity_view_draw(entt::registry &r);
 
 GUI::GUI(GLFWwindow *window) : m_window(window) {
 
@@ -52,9 +52,13 @@ void GUI::render() {
   glClearColor(clear.x, clear.y, clear.z, clear.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  auto rotation_view = m_scene.m_registry.view<RotationComponent, ModelComponent>();
-  auto scale_view = m_scene.m_registry.view<ScaleComponent, ModelComponent>();
-  auto draw_view = m_scene.m_registry.view<DrawableComponent, ModelComponent>();
+  auto rotation_view = 
+    m_scene.m_registry.view<RotationComponent, ModelComponent>();
+  auto scale_view = 
+    m_scene.m_registry.view<ScaleComponent, ModelComponent>();
+  auto draw_view = 
+    m_scene.m_registry.view<DrawableComponent, ModelComponent>();
+
   // SRT
 
   scale_view.each(
@@ -89,18 +93,19 @@ void GUI::render() {
   static double posx, posy;
   glfwGetCursorPos(m_window, &posx, &posy);
 
-  // !!!!!
-  ImGui::Begin("debug");
-  ImGui::Text("Mouse: %f %f", posx, posy);
-  ImGui::Text("Window: %f %f",
-              m_viewport_window.pos.x, m_viewport_window.pos.y);
-
-  ImGui::Text("MouseWindow: %f %f",
-              posx - m_viewport_window.pos.x, posy - m_viewport_window.pos.y);
-  ImGui::End();
 
   m_viewport_window.draw();
-  entity_view_draw(m_scene.m_registry);
+
+  ImGui::Begin("LeftDock"); 
+  create_entity_draw(m_scene.m_registry);
+
+  static entt::entity selection;
+  static bool selected = false;
+  entity_picker(m_scene.m_registry, selection, selected);
+  ImGui::End(); 
+  if (selected) {
+    selected_entity_view_draw(m_scene.m_registry, selection);
+  }
 
 
 
@@ -116,3 +121,13 @@ void GUI::render() {
   }
   glfwMakeContextCurrent(backup_current_context);
 }
+
+/***
+ *
+  ImGui::Text("Mouse: %f %f", posx, posy);
+  ImGui::Text("Window: %f %f",
+              m_viewport_window.pos.x, m_viewport_window.pos.y);
+
+  ImGui::Text("MouseWindow: %f %f",
+              posx - m_viewport_window.pos.x, posy - m_viewport_window.pos.y);
+*/

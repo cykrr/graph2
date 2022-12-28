@@ -1,10 +1,6 @@
 #include "gui/dock.hpp"
 #include "imgui/imgui_internal.h"
 
-void Dock::create() {
-
-}
-
 void Dock::update() {
 
   ImGuiViewport* m_viewport_ptr = ImGui::GetMainViewport();
@@ -51,7 +47,7 @@ void Dock::update() {
 
 		// we now dock our windows into the docking node we made above
 		// ImGui::DockBuilderDockWindow("Down", m_dock_down);
-		ImGui::DockBuilderDockWindow("Create Entity", m_dock_left);
+		ImGui::DockBuilderDockWindow("LeftDock", m_dock_left);
 		ImGui::DockBuilderDockWindow("Viewport", m_dock_up);
     ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_down);
 		ImGui::DockBuilderFinish(dockspace_id);
