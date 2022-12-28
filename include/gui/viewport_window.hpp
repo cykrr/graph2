@@ -10,8 +10,9 @@ public:
   void update_fbo();
   void bind_fbo();
   void unbind_fbo();
+  ImVec2       size;
+  ImVec2       pos;
 protected:
-  ImVec2       m_viewport_size;
   unsigned int m_color_texture;
   unsigned int m_fbo;
   unsigned int m_rbo;

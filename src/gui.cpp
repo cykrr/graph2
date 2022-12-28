@@ -20,13 +20,16 @@
 #include "components/view_proj.hpp"
 #include "components/drawable.hpp"
 #include "components/rotation.hpp"
+#include "components/scale.hpp"
 
 #include "entities/cube.hpp"
 #include "entities/triangle.hpp"
 
 #include "gui.hpp"
 
-GUI::GUI(GLFWwindow *window) {
+void entity_view_draw(entt::registry &r);
+
+GUI::GUI(GLFWwindow *window) : m_window(window) {
 
   ImGui::CreateContext();
   ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -50,18 +53,24 @@ void GUI::render() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   auto rotation_view = m_scene.m_registry.view<RotationComponent, ModelComponent>();
+  auto scale_view = m_scene.m_registry.view<ScaleComponent, ModelComponent>();
   auto draw_view = m_scene.m_registry.view<DrawableComponent, ModelComponent>();
+  // SRT
+
+  scale_view.each(
+      [](ScaleComponent & rc, ModelComponent & mc) {
+        scale_model(mc, rc);
+      });
 
   rotation_view.each(
       [](RotationComponent & rc, ModelComponent & mc) {
-          if(rc.axis.x + rc.axis.y + rc.axis.z)
-            mc.matrix = glm::rotate(glm::mat4(1.f), rc.radians, rc.axis);
+        rotate_model(mc, rc);
       });
 
-  draw_view.each(
-      [](const entt::entity & ent, struct DrawableComponent &drawable, struct ModelComponent &model){
-        draw_component(drawable, model);
-      });
+  draw_view.each([](struct DrawableComponent &drawable,
+                    struct ModelComponent &model) {
+                   draw_component(drawable, model);
+                 });
 
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -77,8 +86,23 @@ void GUI::render() {
 
   // Draw child views
 
+  static double posx, posy;
+  glfwGetCursorPos(m_window, &posx, &posy);
+
+  // !!!!!
+  ImGui::Begin("debug");
+  ImGui::Text("Mouse: %f %f", posx, posy);
+  ImGui::Text("Window: %f %f",
+              m_viewport_window.pos.x, m_viewport_window.pos.y);
+
+  ImGui::Text("MouseWindow: %f %f",
+              posx - m_viewport_window.pos.x, posy - m_viewport_window.pos.y);
+  ImGui::End();
+
   m_viewport_window.draw();
   entity_view_draw(m_scene.m_registry);
+
+
 
   // Update and Render ImGUI
 

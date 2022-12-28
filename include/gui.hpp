@@ -17,9 +17,8 @@ private:
    ViewportWindow m_viewport_window;
             Scene m_scene;
              Dock m_dockspace;
+     GLFWwindow * m_window;
 
-               void entity_view_draw(entt::registry &r);
-          std::tuple<const char *, entity_fn_t> entity_type_picker_draw(entt::registry &);
 
 };
 #endif

@@ -9,10 +9,13 @@ ViewportWindow::ViewportWindow() {
 
 void ViewportWindow::draw() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-  ImGui::Begin("Viewport", NULL);
-  this->m_viewport_size = ImGui::GetContentRegionAvail();
+  ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoTitleBar);
+
+  this->pos = ImGui::GetWindowPos();
+  this->size = ImGui::GetContentRegionAvail();
+
     ImGui::Image((void*)m_color_texture,
-                 ImVec2(m_viewport_size.x, m_viewport_size.y),
+                 ImVec2(size.x, size.y),
                  ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();
@@ -22,7 +25,7 @@ void ViewportWindow::draw() {
 void ViewportWindow::bind_fbo()
 {
   glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-  glViewport(0, 0, m_viewport_size.x, m_viewport_size.y);
+  glViewport(0, 0, size.x, size.y);
 }
 
 void ViewportWindow::unbind_fbo()
@@ -37,7 +40,7 @@ void ViewportWindow::update_fbo()
 
   glBindTexture(GL_TEXTURE_2D, m_color_texture);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_viewport_size.x, m_viewport_size.y, 0, GL_RGB,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB,
                GL_UNSIGNED_BYTE, NULL);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -47,7 +50,7 @@ void ViewportWindow::update_fbo()
 
   glBindRenderbuffer(GL_RENDERBUFFER, m_rbo);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,
-                        m_viewport_size.x, m_viewport_size.y);
+                        size.x, size.y);
 
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
                             GL_RENDERBUFFER, m_rbo);

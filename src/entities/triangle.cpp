@@ -2,6 +2,7 @@
 #include "drawable.hpp"
 #include "components/drawable.hpp"
 #include "components/rotation.hpp"
+#include "components/scale.hpp"
 #include <entt/entity/fwd.hpp>
 static float vertices[] =  {
     -0.5f, -0.5f, 0.0f,
@@ -31,6 +32,7 @@ entt::entity create_triangle(entt::registry & r) {
   entt::entity e =r.create();
   r.emplace<DrawableComponent>(e, component);
   r.emplace<RotationComponent>(e, (RotationComponent){glm::vec3(0,0,0), 0});
+  r.emplace<ScaleComponent>(e, (ScaleComponent){glm::vec3(1,1,1)});
   r.emplace<ModelComponent>(e, glm::mat4(1.f));
   return e;
 

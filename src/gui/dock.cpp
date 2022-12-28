@@ -18,7 +18,7 @@ void Dock::update() {
 
   ImGuiID dockspace_id = ImGui::GetID("DockSpace");
   ImGui::DockSpace(dockspace_id, ImVec2(0, 0),
-                   ImGuiDockNodeFlags_PassthruCentralNode
+                   ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_AutoHideTabBar
                    // ImGuiDockNodeFlags_NoTabBar
                    );
 
@@ -29,7 +29,7 @@ void Dock::update() {
 		ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
 		ImGui::DockBuilderAddNode(dockspace_id,
                             ImGuiDockNodeFlags_PassthruCentralNode |
-                            ImGuiDockNodeFlags_DockSpace);
+                            ImGuiDockNodeFlags_DockSpace |ImGuiDockNodeFlags_AutoHideTabBar);
 		ImGui::DockBuilderSetNodeSize(dockspace_id, m_viewport_ptr->Size);
 
 		/* split the dockspace into 2 nodes -- DockBuilderSplitNode takes in the
@@ -51,7 +51,7 @@ void Dock::update() {
 
 		// we now dock our windows into the docking node we made above
 		// ImGui::DockBuilderDockWindow("Down", m_dock_down);
-		ImGui::DockBuilderDockWindow("Entities", m_dock_left);
+		ImGui::DockBuilderDockWindow("Create Entity", m_dock_left);
 		ImGui::DockBuilderDockWindow("Viewport", m_dock_up);
     ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_down);
 		ImGui::DockBuilderFinish(dockspace_id);

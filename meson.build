@@ -34,6 +34,10 @@ fonts_files = files(
   'src/scene.cpp',
   'src/entities/cube.cpp',
   'src/entities/triangle.cpp',
+
+  'src/components/rotate.cpp',
+  'src/components/scale.cpp',
+  'src/components/translate.cpp',
   'src/components/drawable.cpp',
 
   'src/gui.cpp',
