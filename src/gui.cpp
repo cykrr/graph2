@@ -47,36 +47,10 @@ GUI::GUI(GLFWwindow *window) : m_window(window) {
 
 void GUI::render() {
   // Render Scene
+
   m_viewport_window.bind_fbo();
-  Color clear("#656565");
-  glClearColor(clear.x, clear.y, clear.z, clear.w);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  auto rotation_view = 
-    m_scene.m_registry.view<RotationComponent, ModelComponent>();
-  auto scale_view = 
-    m_scene.m_registry.view<ScaleComponent, ModelComponent>();
-  auto draw_view = 
-    m_scene.m_registry.view<DrawableComponent, ModelComponent>();
-
-  // SRT
-
-  scale_view.each(
-      [](ScaleComponent & rc, ModelComponent & mc) {
-        scale_model(mc, rc);
-      });
-
-  rotation_view.each(
-      [](RotationComponent & rc, ModelComponent & mc) {
-        rotate_model(mc, rc);
-      });
-
-  draw_view.each([](struct DrawableComponent &drawable,
-                    struct ModelComponent &model) {
-                   draw_component(drawable, model);
-                 });
-
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  m_scene.render();
+  m_viewport_window.unbind_fbo();
 
   // Begin frame
 

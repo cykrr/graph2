@@ -5,6 +5,7 @@
 
 struct ScaleComponent {
   ScaleComponent(const ScaleComponent &) = default;
+  ScaleComponent(ScaleComponent &) = default;
   glm::vec3 axis;
 };
 

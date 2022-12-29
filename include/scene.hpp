@@ -7,6 +7,7 @@ public:
   ~Scene();
   entt::entity create_entity();
   entt::registry m_registry;
+  void render();
 private:
   
 };
