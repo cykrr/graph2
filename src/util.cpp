@@ -4,7 +4,7 @@ float currentTime = 0;
 float prevTime = 0;
 float dt = 0;
 
-void updateTime(){
+void update_time(){
     currentTime = glfwGetTime();
     dt = currentTime - prevTime;
     prevTime = currentTime;

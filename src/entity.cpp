@@ -28,7 +28,7 @@ entt::entity create_entity(entt::registry & r, float *vertices, unsigned int ver
   vao.unbind();
   entt::entity e =r.create();
   r.emplace<DrawableComponent>(e, component);
-  r.emplace<ModelComponent>(e, glm::mat4(1.f));
+  r.emplace<ModelComponent>(e, (ModelComponent){glm::mat4(1.f)});
   return e;
 
 }

@@ -7,7 +7,7 @@
 extern float dt;
 extern float currentTime;
 extern float prevTime;
-void updateTime();
+void update_time();
 
 #define ZFAR 100.f
 #define ZNEAR 0.1f

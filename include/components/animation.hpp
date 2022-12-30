@@ -6,51 +6,38 @@
 #include "entt/entity/registry.hpp"
 typedef float(*easing_fn)(float, float, float, float);
 
-struct Animation {
-  float begin_value;
-  float end_value;
-  float duration;
-  float elapsed_time;
-  float *var;
-  easing_fn fn;
-  Animation(const Animation &) = default;
-  Animation(Animation &) = default;
-};
+typedef struct Animation Animation;
 
 struct AnimationComponent {
   std::vector<Animation> vector;
   AnimationComponent() = default;
 };
 
-void add_animation(AnimationComponent &c, const Animation &a) {
-  c.vector.push_back(a);
-}
+struct Animation {
+  float begin_value;
+  float change; // variation of ^ initial value
+  float duration;
+  float *var;
+  easing_fn fn;
 
-void add_animation(entt::registry &r, entt::entity &e, const Animation &a) {
-  r.get<AnimationComponent>(e).vector.push_back(a);
-}
+  double elapsed_time = 0;
+
+  Animation(const Animation &) = default;
+  Animation(Animation &) = default;
+  // Is this allowed?
+  Animation(float begin_value, float change, float duration, float *variable,
+            easing_fn fn) : begin_value(begin_value), change(change),
+    duration(duration), var(variable), fn(fn) {}
+};
 
 
-bool run_animation(Animation & a, float dt ) {
-    if (a.var == NULL) return true;
+void add_animation(entt::registry &r, entt::entity &e, const Animation &a);
+void add_animation(AnimationComponent &c, const Animation &a);
+bool run_animation(Animation & a, double dt);
+void add_animation(AnimationComponent &c, const Animation &a);
+void animation_update(AnimationComponent & a, double dt);
 
-    a.elapsed_time += dt;
-    if (a.elapsed_time > a.duration)
-      return true;
 
-    // printf("init: %f end: %f done %d", a.begin_value, a.end_value, a.elapsed_time > a.duration);
-    // printf("elapsed: %f duration: %f", a.elapsed_time, a.duration);
-    // printf("val: %f\n", *a.var);
-
-    *(a.var) = a.fn(a.elapsed_time, a.begin_value, a.end_value - a.begin_value, a.duration);
-    return false;
-}
-
-bool animation_update(AnimationComponent & a, float dt) {
-  for (Animation & a : a.vector) {
-    run_animation(a, dt);
-  }
-}
 
 #endif
 

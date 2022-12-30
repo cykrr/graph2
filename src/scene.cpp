@@ -1,4 +1,3 @@
-#include "scene.hpp"
 #include "glm/mat4x4.hpp"
 
 #include "components/model.hpp"
@@ -9,6 +8,7 @@
 
 #include "components/drawable.hpp"
 
+#include "scene.hpp"
 
 Scene::Scene() {
 
