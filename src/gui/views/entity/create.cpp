@@ -2,8 +2,9 @@
 #include "util/color.hpp"
 #include "entt/entity/registry.hpp"
 
+#include "components/rotation.hpp"
 #include "components/drawable.hpp"
-#include "components/name.hpp"
+#include "components/gui.hpp"
 
 #include "entities/cube.hpp"
 #include "entities/triangle.hpp"
@@ -37,14 +38,19 @@ void create_entity_draw(entt::registry & r)
     strlen(buf) != 0 
   ) {
     // get primitive type
-    const char * n = std::get<0>(entity_desc);
+    const char * ent_type_str = std::get<0>(entity_desc);
 
     // get selected fn and call it to get the ent
     entt::entity e = std::get<1>(entity_desc)(r); 
 
+    std::vector<Components::m_enum> components;
+    components.push_back(Components::ModelComponent);
+    components.push_back(Components::DrawableComponent);
+    components.push_back(Components::RotateComponent);
     // Fill it's components
-    NameComponent nc(buf,  n);
-    r.emplace<NameComponent>(e, nc);
+    GUIComponent nc(buf,  ent_type_str, components);
+    r.emplace<GUIComponent>(e, nc);
+    r.emplace<RotationComponent>(e, RotationComponent({glm::vec3(1.f), 0.f}));
 
     DrawableComponent & c = r.get<DrawableComponent>(e);
     c.m_color = color;

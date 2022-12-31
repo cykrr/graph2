@@ -32,6 +32,7 @@ fonts_files = files(
   'src/wrappers/glfw.cpp',
 
   'src/scene.cpp',
+  'src/entity.cpp',
   'src/entities/cube.cpp',
   'src/entities/triangle.cpp',
 
@@ -48,6 +49,7 @@ fonts_files = files(
   'src/gui/views/entity/create.cpp',
   'src/gui/views/entity/picker.cpp',
   'src/gui/views/entity/view.cpp',
+
 )
 
 subdir('lib/imgui')

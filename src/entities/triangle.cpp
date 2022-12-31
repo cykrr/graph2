@@ -4,6 +4,8 @@
 #include "components/scale.hpp"
 #include <entt/entity/fwd.hpp>
 #include "wrappers/gl.hpp"
+#include "VAO.hpp"
+#include "VBO.hpp"
 #include "entity.hpp"
 static float vertices[] =  {
     -0.5f, -0.5f, 0.0f,
@@ -12,5 +14,7 @@ static float vertices[] =  {
   };
 
 entt::entity create_triangle(entt::registry & r) {
-  return create_entity(r, vertices, 3);
+  static VAO vao;
+  static VBO vbo(BufferType::array_buffer);
+  return create_entity(r, vertices, 3, vao, vbo);
 }

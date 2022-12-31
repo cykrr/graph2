@@ -20,16 +20,22 @@ Scene::~Scene() {
 
 void Scene::render()
 {
-  Color clear("#656565");
+  Color clear("#202020");
   glClearColor(clear.x, clear.y, clear.z, clear.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  auto rotation_view = m_registry.view<RotationComponent, ModelComponent>();
-  auto scale_view = m_registry.view<ScaleComponent, ModelComponent>();
-  auto translate_view = m_registry.view<TranslateComponent, ModelComponent>();
   auto draw_view = m_registry.view<DrawableComponent, ModelComponent>();
 
   // SRT
+
+  auto scale_view = m_registry.view<ScaleComponent, ModelComponent>();
+  auto rotation_view = m_registry.view<RotationComponent, ModelComponent>();
+  auto translate_view = m_registry.view<TranslateComponent, ModelComponent>();
+
+  translate_view.each(
+      [](TranslateComponent & tc, ModelComponent & mc) {
+        translate_model(mc, tc);
+      });
 
   scale_view.each(
       [](ScaleComponent & sc, ModelComponent & mc) {
@@ -41,10 +47,6 @@ void Scene::render()
         rotate_model(mc, rc);
       });
 
-  translate_view.each(
-      [](TranslateComponent & tc, ModelComponent & mc) {
-        translate_model(mc, tc);
-      });
 
   draw_view.each([](struct DrawableComponent &drawable,
                     struct ModelComponent &model) {

@@ -1,4 +1,6 @@
 #include "entity.hpp"
+#include "VAO.hpp"
+#include "VBO.hpp"
 
 static float l_cubeVertices[] = {
     -0.5f, -0.5f, -0.5f,  
@@ -41,6 +43,8 @@ static float l_cubeVertices[] = {
 
 entt::entity create_cube(entt::registry & r)
 {
-  return create_entity(r, l_cubeVertices, 108);
+  static VAO vao;
+  static VBO vbo(BufferType::array_buffer);
+  return create_entity(r, l_cubeVertices, 36, vao, vbo);
 }
 

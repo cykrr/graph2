@@ -8,10 +8,13 @@ typedef float(*easing_fn)(float, float, float, float);
 
 typedef struct Animation Animation;
 
+
 struct AnimationComponent {
-  std::vector<Animation> vector;
+  std::vector<std::vector<Animation>> groups;
   AnimationComponent() = default;
 };
+
+
 
 struct Animation {
   float begin_value;
@@ -31,11 +34,14 @@ struct Animation {
 };
 
 
-void add_animation(entt::registry &r, entt::entity &e, const Animation &a);
+void add_animation(entt::registry &r, entt::entity &e, const Animation &a, int group = 0);
 void add_animation(AnimationComponent &c, const Animation &a);
 bool run_animation(Animation & a, double dt);
-void add_animation(AnimationComponent &c, const Animation &a);
-void animation_update(AnimationComponent & a, double dt);
+void add_animation(AnimationComponent &c, const Animation &a, int group = 0);
+void animation_update(AnimationComponent & a, float dt);
+
+int create_animation_group(entt::registry &r, entt::entity &e);
+int clear_animation_group(entt::registry &r, entt::entity &e, int group = 0);
 
 
 

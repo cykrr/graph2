@@ -15,7 +15,7 @@
 #include "shaders.hpp"
 #include "program.hpp"
 
-#include "components/name.hpp"
+#include "components/gui.hpp"
 #include "components/model.hpp"
 #include "components/view_proj.hpp"
 #include "components/drawable.hpp"
@@ -28,12 +28,22 @@
 #include "gui.hpp"
 #include "gui/views/entity.hpp"
 
+#include "gui/easings.h"
+
+Easings::easings animation_picker() {
+  static int current_animation = 0;
+  ImGui::Combo("Easings", &current_animation, Easings::name_array, IM_ARRAYSIZE(Easings::name_array));
+  return (Easings::easings)current_animation;
+
+}
+
 
 GUI::GUI(GLFWwindow *window) : m_window(window) {
 
   ImGui::CreateContext();
   ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   this->m_io = &ImGui::GetIO();
+  this->m_io->Fonts->AddFontFromFileTTF("res/fonts/cantarell.ttf", 20);
   // this->io->ConfigDockingWithShift = true;
 
   // setup platform/renderer bindings
@@ -76,6 +86,8 @@ void GUI::render() {
   static entt::entity selection;
   static bool selected = false;
   entity_picker(m_scene.m_registry, selection, selected);
+
+
   ImGui::End(); 
   if (selected) {
     selected_entity_view_draw(m_scene.m_registry, selection);
