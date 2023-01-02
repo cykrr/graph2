@@ -44,8 +44,9 @@ int main() {
   });
   glfwSetFramebufferSizeCallback(w, [](GLFWwindow *w, int width, int height) {
     GUI *s = (GUI *)glfwGetWindowUserPointer(w) ;
-    s->m_scene.cam.update(s->m_viewport_window.size.x, s->m_viewport_window.size.y);
-    Program::setMat4_id(Shaders::get_shader("main"), "vp", s->m_scene.cam.matrix);
+    glViewport(0, 0, width, height);
+    s->m_viewport_window.m_scene.cam.update(s->m_viewport_window.size.x, s->m_viewport_window.size.y);
+    Program::setMat4_id(Shaders::get_shader("main"), "vp", s->m_viewport_window.m_scene.cam.matrix);
     // TODO: vector with all the shaders that need updating to batch the process
     // of inserting vp matrix
   });

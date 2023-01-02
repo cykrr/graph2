@@ -9,23 +9,14 @@
 
 class Camera {
     public:
-        glm::mat4 mP, mV, mM;
-        glm::mat4 matrix;
+        glm::mat4 matrix = glm::mat4(1.f);
         virtual void update(int w, int h){}
         virtual ~Camera(){};
-
-        // virtual void moveFront(){}
-        // virtual void moveBack(){}
-        // virtual void moveUp(){}
-        // virtual void moveDown(){}
-        // virtual void moveLeft(){}
-        // virtual void moveRight(){}
 };
 class OrthographicCamera : public Camera {
     public:
         OrthographicCamera(int w, int h);
-        glm::mat4 matrix;
-        void update(int w, int h);
+        void update(int w, int h) override;
 };
 
 class PerspectiveCamera : public Camera {
@@ -37,7 +28,7 @@ class PerspectiveCamera : public Camera {
         float yaw = -90.0f, pitch = 0, roll = 0;
         float speed;
 
-        void update(int w, int h);
+        void update(int w, int h) override;
 
         void moveFront();
         void moveBack();

@@ -8,7 +8,7 @@ public:
   ~Scene();
   entt::entity create_entity();
   entt::registry m_registry;
-  OrthographicCamera cam = OrthographicCamera(1, 1);
+  Camera cam = Camera();
   void render();
   GLFWwindow *window;
 };

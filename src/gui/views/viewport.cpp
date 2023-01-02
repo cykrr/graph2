@@ -1,4 +1,6 @@
-#include "gui/views/viewport_window.hpp"
+#include "gui/views/viewport.hpp"
+#include "program.hpp"
+#include "shaders.hpp"
 
 ViewportWindow::ViewportWindow() {
   glGenFramebuffers(1, &m_fbo);
@@ -8,6 +10,11 @@ ViewportWindow::ViewportWindow() {
 }
 
 void ViewportWindow::draw() {
+  bind_fbo();
+  Program::setMat4_id(Shaders::get_shader("main"), "vp", m_scene.cam.matrix);
+  m_scene.render();
+  unbind_fbo();
+
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
   ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoTitleBar);
 

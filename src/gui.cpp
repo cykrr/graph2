@@ -14,6 +14,7 @@
 #include "views/triangle.hpp"
 #include "shaders.hpp"
 #include "program.hpp"
+#include "cam.hpp"
 
 #include "components/gui.hpp"
 #include "components/model.hpp"
@@ -29,6 +30,7 @@
 #include "gui/views/entity.hpp"
 
 #include "gui/desc/easings.h"
+#include "gui/desc/camera.hpp"
 #include "gui/elements/matrix.hpp"
 
 Easings::easings animation_picker() {
@@ -57,11 +59,6 @@ GUI::GUI(GLFWwindow *window) : m_window(window) {
 }
 
 void gui_render(GUI & gui) {
-  // Render Scene
-
-  gui.m_viewport_window.bind_fbo();
-  gui.m_scene.render();
-  gui.m_viewport_window.unbind_fbo();
 
   // Begin frame
 
@@ -78,24 +75,53 @@ void gui_render(GUI & gui) {
   static double posx, posy;
   glfwGetCursorPos(gui.m_window, &posx, &posy);
 
-  ImGui::ShowMetricsWindow(NULL);
+  // ImGui::ShowMetricsWindow(NULL);
 
   gui.m_viewport_window.draw();
 
-  ImGui::Begin("LeftDock"); 
-  static entt::entity selection;
-  static bool selected = false;
-  Views::Entity::create(gui.m_scene.m_registry, selection, selected);
-  Views::Entity::pick(gui.m_scene.m_registry, selection, selected);
+  ImGui::Begin("Camera");
+  ImGui::Text("Camera:");
+    static int current_camera = 0;
+    ImGui::Combo("##Camera", &current_camera, Descriptors::Camera::m_name,
+                 IM_ARRAYSIZE(Descriptors::Camera::m_name));
 
-  ImGui::Text("Projection");
-  Views::matrix(gui.m_scene.cam.matrix);
+    switch ((Descriptors::Camera::m_enum)current_camera) {
+    case Descriptors::Camera::OrthographicCamera:
+      printf("set ortho\n");
+      gui.m_viewport_window.m_scene.cam = OrthographicCamera(
+          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+      break;
+    case Descriptors::Camera::PerspectiveCamera:
+      gui.m_viewport_window.m_scene.cam = PerspectiveCamera(
+          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+      break;
+    case Descriptors::Camera::NoCamera:
+      gui.m_viewport_window.m_scene.cam = Camera();
+      break;
+      gui.m_viewport_window.m_scene.cam.update(
+          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
 
+      Program::setMat4_id(Shaders::get_shader("main"), "vp",
+                          gui.m_viewport_window.m_scene.cam.matrix);
+    }
+    ImGui::Text("VP Size: %f, %f",
+                gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+
+    ImGui::Text("Projection");
+    Views::matrix(gui.m_viewport_window.m_scene.cam.matrix);
+  ImGui::End();
+
+  ImGui::Begin("Entities"); 
+    static entt::entity selection;
+    static bool selected = false;
+    Views::Entity::create(gui.m_viewport_window.m_scene.m_registry,
+                          selection, selected);
+    Views::Entity::pick(gui.m_viewport_window.m_scene.m_registry, selection,
+                        selected);
   ImGui::End(); 
-  if (selected)
-    Views::Entity::view(gui.m_scene.m_registry, selection);
 
 
+  if (selected) Views::Entity::view(gui.m_viewport_window.m_scene.m_registry, selection);
 
   // Update and Render ImGUI
 

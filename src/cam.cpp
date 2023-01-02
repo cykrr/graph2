@@ -21,16 +21,13 @@ PerspectiveCamera::PerspectiveCamera() : Camera() {
 
 PerspectiveCamera::PerspectiveCamera(int w, int h) : PerspectiveCamera() {
     speed = 2.5f;
-    mV = glm::mat4(1.0f);
-    mM = mV;
-    mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.1f, 100.f);
     update(w,h);
 }
 
 void PerspectiveCamera::update(int w, int h) {
-    mV = glm::lookAt(pos, pos + vFront, vUp);
-    mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.0f, 100.f);
-    matrix = mP * mV * mM;
+  glm::mat4 mV = glm::lookAt(pos, pos + vFront, vUp);
+  glm::mat4 mP = glm::perspective(glm::radians(45.0f), (float)w/(float)h, 0.0f, 100.f);
+  matrix = mP * mV;
 }
 
 void PerspectiveCamera::moveFront(){

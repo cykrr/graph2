@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "imgui.h"
 #include "glad/glad.h"
+#include "scene.hpp"
 class ViewportWindow {
 public:
   ViewportWindow();
@@ -12,6 +13,7 @@ public:
   void unbind_fbo();
   ImVec2       size;
   ImVec2       pos;
+  Scene m_scene;
 protected:
   unsigned int m_color_texture;
   unsigned int m_fbo;

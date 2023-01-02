@@ -36,7 +36,8 @@ void Dock::update() {
 
 		m_dock_left = ImGui::DockBuilderSplitNode(
         dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
-		ImGui::DockBuilderDockWindow("LeftDock", m_dock_left);
+		ImGui::DockBuilderDockWindow("Entities", m_dock_left);
+		ImGui::DockBuilderDockWindow("Camera", m_dock_left);
 
 		unsigned int m_dock_left_down = ImGui::DockBuilderSplitNode(
         m_dock_left, ImGuiDir_Down, 0.5f, nullptr, &m_dock_left);
