@@ -39,7 +39,7 @@ fonts_files = files(
   'src/components/rotate.cpp',
   'src/components/scale.cpp',
   'src/components/translate.cpp',
-  'src/components/drawable.cpp',
+  'src/components/mesh.cpp',
 
   'src/gui.cpp',
 

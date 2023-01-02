@@ -6,7 +6,7 @@
 #include "components/rotation.hpp"
 #include "components/translate.hpp"
 
-#include "components/drawable.hpp"
+#include "components/mesh.hpp"
 
 #include "scene.hpp"
 
@@ -24,7 +24,7 @@ void Scene::render()
   glClearColor(clear.x, clear.y, clear.z, clear.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  auto draw_view = m_registry.view<DrawableComponent, ModelComponent>();
+  auto draw_view = m_registry.view<MeshComponent, ModelComponent, ShaderComponent>();
 
   // SRT
 
@@ -48,8 +48,9 @@ void Scene::render()
       });
 
 
-  draw_view.each([](struct DrawableComponent &drawable,
-                    struct ModelComponent &model) {
-                   draw_component(drawable, model);
+  draw_view.each([](struct MeshComponent &drawable,
+                    struct ModelComponent &model,
+                    struct ShaderComponent &shader) {
+                   draw_component(drawable, model, shader);
                  });
 }

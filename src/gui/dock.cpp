@@ -14,7 +14,7 @@ void Dock::update() {
 
   ImGuiID dockspace_id = ImGui::GetID("DockSpace");
   ImGui::DockSpace(dockspace_id, ImVec2(0, 0),
-                   ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_AutoHideTabBar
+                   ImGuiDockNodeFlags_PassthruCentralNode
                    // ImGuiDockNodeFlags_NoTabBar
                    );
 
@@ -40,7 +40,13 @@ void Dock::update() {
 		m_dock_down = ImGui::DockBuilderSplitNode(
         dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
 		m_dock_left = ImGui::DockBuilderSplitNode(
-        dockspace_id, ImGuiDir_Left, 0.25f, nullptr, &dockspace_id);
+        dockspace_id, ImGuiDir_Left, 0.3f, nullptr, &dockspace_id);
+
+		unsigned int m_dock_left_down = ImGui::DockBuilderSplitNode(
+        m_dock_left, ImGuiDir_Down, 0.5f, nullptr, &m_dock_left);
+
+		unsigned int m_dock_right = ImGui::DockBuilderSplitNode(
+        dockspace_id, ImGuiDir_Right, 0.3f, nullptr, &dockspace_id);
 		m_dock_up = ImGui::DockBuilderSplitNode(
         dockspace_id, ImGuiDir_Up, 1.f, nullptr, &dockspace_id);
 
@@ -49,7 +55,8 @@ void Dock::update() {
 		// ImGui::DockBuilderDockWindow("Down", m_dock_down);
 		ImGui::DockBuilderDockWindow("LeftDock", m_dock_left);
 		ImGui::DockBuilderDockWindow("Viewport", m_dock_up);
-    ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_down);
+    ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_left_down);
+    ImGui::DockBuilderDockWindow("Dear ImGui Metrics/Debugger", m_dock_right);
 		ImGui::DockBuilderFinish(dockspace_id);
 	}
   ImGui::End();

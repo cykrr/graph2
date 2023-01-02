@@ -18,7 +18,7 @@
 #include "components/gui.hpp"
 #include "components/model.hpp"
 #include "components/view_proj.hpp"
-#include "components/drawable.hpp"
+#include "components/mesh.hpp"
 #include "components/rotation.hpp"
 #include "components/scale.hpp"
 
@@ -29,6 +29,7 @@
 #include "gui/views/entity.hpp"
 
 #include "gui/easings.h"
+#include "gui/matrix.hpp"
 
 Easings::easings animation_picker() {
   static int current_animation = 0;
@@ -77,6 +78,7 @@ void GUI::render() {
   static double posx, posy;
   glfwGetCursorPos(m_window, &posx, &posy);
 
+  ImGui::ShowMetricsWindow(NULL);
 
   m_viewport_window.draw();
 
@@ -87,6 +89,7 @@ void GUI::render() {
   static bool selected = false;
   entity_picker(m_scene.m_registry, selection, selected);
 
+  matrix_draw(m_scene.cam.matrix);
 
   ImGui::End(); 
   if (selected) {

@@ -1,12 +1,11 @@
-#include "entities/triangle.hpp"
-#include "components/drawable.hpp"
-#include "components/rotation.hpp"
-#include "components/scale.hpp"
 #include <entt/entity/fwd.hpp>
 #include "wrappers/gl.hpp"
 #include "VAO.hpp"
 #include "VBO.hpp"
 #include "entity.hpp"
+
+#include "entities/triangle.hpp"
+
 static float vertices[] =  {
     -0.5f, -0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
