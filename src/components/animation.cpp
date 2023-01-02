@@ -18,8 +18,8 @@ bool run_animation(Animation & a, double dt)
     // printf("elapsed: %f dt: %f\n", a.elapsed_time, dt);
     if (a.elapsed_time + dt > a.duration) {
       *(a.var) = a.fn(a.duration, a.begin_value, a.change, a.duration);
-      printf("End value %.2f; delta = %.2f\n",
-             *a.var * 180 / M_PI, *a.var - a.begin_value);
+      // printf("End value %.2f; delta = %.2f\n",
+             // *a.var * 180 / M_PI, *a.var - a.begin_value);
       return true;
   }
     a.elapsed_time+=dt;
@@ -33,7 +33,7 @@ void animation_update(AnimationComponent & a, float dt)
   for (std::vector<Animation> & g : a.groups) {
     for (Animation & a : g) {
       if (run_animation(a, dt)) {
-        printf("listo\n");
+        // printf("listo\n");
         g.erase(std::remove_if(g.begin(), g.end(), [&] (const Animation & lh) { return lh.begin_value == a.begin_value;}), g.end());
       }
     }

@@ -11,12 +11,12 @@ class GUI {
 public:
   GUI(GLFWwindow *w);
   void render();
-private:
         ImGuiIO * m_io;
    ViewportWindow m_viewport_window;
             Scene m_scene;
              Dock m_dockspace;
      GLFWwindow * m_window;
+private:
 
 
 };
