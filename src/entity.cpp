@@ -1,10 +1,13 @@
-#include "components/drawable.hpp"
+#include <entt/entity/registry.hpp>
+
+#include "components/mesh.hpp"
 #include "components/rotation.hpp"
 #include "components/scale.hpp"
 #include "components/model.hpp"
-#include "entt/entity/registry.hpp"
+
 #include "VAO.hpp"
 #include "VBO.hpp"
+#include "shaders.hpp"
 
 
 entt::entity create_entity(entt::registry & r, float *vertices, unsigned int vertex_count, VAO &vao, VBO &vbo) {
@@ -18,22 +21,26 @@ entt::entity create_entity(entt::registry & r, float *vertices, unsigned int ver
   vbo.unbind();
   vao.unbind();
 
-  DrawableComponent drawable = {
-    Shaders::get_shader("main"),
+  MeshComponent drawable = {
     vao.get_id(),
     vertex_count,
-    Color("#ffffff"),
     false,
+    Color("#ffffff"),
   };
 
   ModelComponent m = {
     glm::mat4(1.f)
   };
 
+  ShaderComponent s = {
+    Shaders::get_shader("main")
+  };
+
 
   entt::entity e =r.create();
-  r.emplace<DrawableComponent>(e, drawable);
+  r.emplace<MeshComponent>(e, drawable);
   r.emplace<ModelComponent>(e, m);
+  r.emplace<ShaderComponent>(e, s);
   return e;
 
 }

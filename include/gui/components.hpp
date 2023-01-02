@@ -4,22 +4,24 @@ namespace Components {
 
 enum m_enum {
   NoComponent = 0,
-  DrawableComponent,
+  MeshComponent,
   AnimationComponent,
   ScaleComponent,
   TranslateComponent,
   RotateComponent,
   ModelComponent,
+  ShaderComponent,
 };
 
 static const char * m_name [] {
  "NoComponent",
- "DrawableComponent",
+ "MeshComponent",
  "AnimationComponent",
  "ScaleComponent",
  "TranslateComponent",
  "RotateComponent",
  "ModelComponent",
+ "ShaderComponent",
 };
 
 
