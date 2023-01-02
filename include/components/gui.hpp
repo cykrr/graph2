@@ -2,7 +2,7 @@
 #define GUI_COMPONENT_H
 #include <string.h>
 #include <vector>
-#include "gui/components.hpp"
+#include "gui/desc/components.hpp"
 // Allow entities to be identified by GUI
 struct GUIComponent
 {

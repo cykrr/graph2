@@ -1,4 +1,4 @@
-#include "gui/viewport_window.hpp"
+#include "gui/views/viewport_window.hpp"
 
 ViewportWindow::ViewportWindow() {
   glGenFramebuffers(1, &m_fbo);

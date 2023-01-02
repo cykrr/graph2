@@ -3,7 +3,7 @@
 #include "components/model.hpp"
 
 #include "components/scale.hpp"
-#include "components/rotation.hpp"
+#include "components/rotate.hpp"
 #include "components/translate.hpp"
 
 #include "components/mesh.hpp"
@@ -29,7 +29,7 @@ void Scene::render()
   // SRT
 
   auto scale_view = m_registry.view<ScaleComponent, ModelComponent>();
-  auto rotation_view = m_registry.view<RotationComponent, ModelComponent>();
+  auto rotate_view = m_registry.view<RotateComponent, ModelComponent>();
   auto translate_view = m_registry.view<TranslateComponent, ModelComponent>();
 
   translate_view.each(
@@ -42,8 +42,8 @@ void Scene::render()
         scale_model(mc, sc);
       });
 
-  rotation_view.each(
-      [](RotationComponent & rc, ModelComponent & mc) {
+  rotate_view.each(
+      [](RotateComponent & rc, ModelComponent & mc) {
         rotate_model(mc, rc);
       });
 

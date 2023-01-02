@@ -7,7 +7,7 @@ void Dock::update() {
   ImGui::SetNextWindowPos(m_viewport_ptr->Pos);
   ImGui::SetNextWindowSize(m_viewport_ptr->Size);
 
-  ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
+  ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize;
   ImGui::SetNextWindowSize(m_viewport_ptr->Size);
   ImGui::SetNextWindowPos(m_viewport_ptr->Pos);
   ImGui::Begin("DockSpace", NULL, window_flags);
@@ -28,35 +28,23 @@ void Dock::update() {
                             ImGuiDockNodeFlags_DockSpace |ImGuiDockNodeFlags_AutoHideTabBar);
 		ImGui::DockBuilderSetNodeSize(dockspace_id, m_viewport_ptr->Size);
 
-		/* split the dockspace into 2 nodes -- DockBuilderSplitNode takes in the
-     * following args in the following order window ID to split, direction,
-     * fraction (between 0 and 1), the final two setting let's us choose which
-     * id we want (which ever one we DON'T set as NULL, will be returned by the
-     * function)
-     * 
-     * out_id_at_dir is the id of the node in the direction we specified
-     * earlier, out_id_at_opposite_dir is in the opposite direction*/
+		ImGui::DockBuilderDockWindow("Viewport", dockspace_id);
 
-		m_dock_down = ImGui::DockBuilderSplitNode(
-        dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
+		unsigned int m_dock_right = ImGui::DockBuilderSplitNode(
+        dockspace_id, ImGuiDir_Right, 0.2f, nullptr, &dockspace_id);
+    ImGui::DockBuilderDockWindow("Dear ImGui Metrics/Debugger", m_dock_right);
+
 		m_dock_left = ImGui::DockBuilderSplitNode(
-        dockspace_id, ImGuiDir_Left, 0.3f, nullptr, &dockspace_id);
+        dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
+		ImGui::DockBuilderDockWindow("LeftDock", m_dock_left);
 
 		unsigned int m_dock_left_down = ImGui::DockBuilderSplitNode(
         m_dock_left, ImGuiDir_Down, 0.5f, nullptr, &m_dock_left);
-
-		unsigned int m_dock_right = ImGui::DockBuilderSplitNode(
-        dockspace_id, ImGuiDir_Right, 0.3f, nullptr, &dockspace_id);
-		m_dock_up = ImGui::DockBuilderSplitNode(
-        dockspace_id, ImGuiDir_Up, 1.f, nullptr, &dockspace_id);
+    ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_left_down);
 
 
 		// we now dock our windows into the docking node we made above
 		// ImGui::DockBuilderDockWindow("Down", m_dock_down);
-		ImGui::DockBuilderDockWindow("LeftDock", m_dock_left);
-		ImGui::DockBuilderDockWindow("Viewport", m_dock_up);
-    ImGui::DockBuilderDockWindow("SelectedEntity", m_dock_left_down);
-    ImGui::DockBuilderDockWindow("Dear ImGui Metrics/Debugger", m_dock_right);
 		ImGui::DockBuilderFinish(dockspace_id);
 	}
   ImGui::End();

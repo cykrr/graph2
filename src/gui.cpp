@@ -19,7 +19,7 @@
 #include "components/model.hpp"
 #include "components/view_proj.hpp"
 #include "components/mesh.hpp"
-#include "components/rotation.hpp"
+#include "components/rotate.hpp"
 #include "components/scale.hpp"
 
 #include "entities/cube.hpp"
@@ -28,8 +28,8 @@
 #include "gui.hpp"
 #include "gui/views/entity.hpp"
 
-#include "gui/easings.h"
-#include "gui/matrix.hpp"
+#include "gui/desc/easings.h"
+#include "gui/elements/matrix.hpp"
 
 Easings::easings animation_picker() {
   static int current_animation = 0;
@@ -56,12 +56,12 @@ GUI::GUI(GLFWwindow *window) : m_window(window) {
   }
 }
 
-void GUI::render() {
+void gui_render(GUI & gui) {
   // Render Scene
 
-  m_viewport_window.bind_fbo();
-  m_scene.render();
-  m_viewport_window.unbind_fbo();
+  gui.m_viewport_window.bind_fbo();
+  gui.m_scene.render();
+  gui.m_viewport_window.unbind_fbo();
 
   // Begin frame
 
@@ -70,31 +70,30 @@ void GUI::render() {
   ImGui::NewFrame();
 
   // Update views
-  m_dockspace.update();
-  m_viewport_window.update_fbo();
+  gui.m_dockspace.update();
+  gui.m_viewport_window.update_fbo();
 
   // Draw child views
 
   static double posx, posy;
-  glfwGetCursorPos(m_window, &posx, &posy);
+  glfwGetCursorPos(gui.m_window, &posx, &posy);
 
   ImGui::ShowMetricsWindow(NULL);
 
-  m_viewport_window.draw();
+  gui.m_viewport_window.draw();
 
   ImGui::Begin("LeftDock"); 
-  create_entity_draw(m_scene.m_registry);
-
   static entt::entity selection;
   static bool selected = false;
-  entity_picker(m_scene.m_registry, selection, selected);
+  Views::Entity::create(gui.m_scene.m_registry, selection, selected);
+  Views::Entity::pick(gui.m_scene.m_registry, selection, selected);
 
-  matrix_draw(m_scene.cam.matrix);
+  ImGui::Text("Projection");
+  Views::matrix(gui.m_scene.cam.matrix);
 
   ImGui::End(); 
-  if (selected) {
-    selected_entity_view_draw(m_scene.m_registry, selection);
-  }
+  if (selected)
+    Views::Entity::view(gui.m_scene.m_registry, selection);
 
 
 
@@ -103,7 +102,7 @@ void GUI::render() {
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   GLFWwindow* backup_current_context = glfwGetCurrentContext();
-  if (m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+  if (gui.m_io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
   {
     ImGui::UpdatePlatformWindows();
     ImGui::RenderPlatformWindowsDefault();
@@ -111,12 +110,3 @@ void GUI::render() {
   glfwMakeContextCurrent(backup_current_context);
 }
 
-/***
- *
-  ImGui::Text("Mouse: %f %f", posx, posy);
-  ImGui::Text("Window: %f %f",
-              m_viewport_window.pos.x, m_viewport_window.pos.y);
-
-  ImGui::Text("MouseWindow: %f %f",
-              posx - m_viewport_window.pos.x, posy - m_viewport_window.pos.y);
-*/

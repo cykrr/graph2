@@ -1,7 +1,7 @@
 #include <entt/entity/registry.hpp>
 
 #include "components/mesh.hpp"
-#include "components/rotation.hpp"
+#include "components/rotate.hpp"
 #include "components/scale.hpp"
 #include "components/model.hpp"
 

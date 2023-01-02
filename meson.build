@@ -44,11 +44,8 @@ fonts_files = files(
   'src/gui.cpp',
 
   'src/gui/dock.cpp',
-  'src/gui/viewport_window.cpp',
-
-  'src/gui/views/entity/create.cpp',
-  'src/gui/views/entity/picker.cpp',
-  'src/gui/views/entity/view.cpp',
+  'src/gui/views/viewport.cpp',
+  'src/gui/views/entity.cpp',
 
 )
 
