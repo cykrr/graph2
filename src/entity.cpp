@@ -9,8 +9,11 @@
 #include "VBO.hpp"
 #include "shaders.hpp"
 
+#include "entity.hpp"
 
-entt::entity create_entity(entt::registry & r, float *vertices, unsigned int vertex_count, VAO &vao, VBO &vbo) {
+
+Entity::Entity(entt::registry & r, float *vertices, unsigned int vertex_count, VAO &vao, VBO &vbo) : 
+  Entity(r) {
 
   vao.bind();
   vbo.bind_buffer();
@@ -35,12 +38,7 @@ entt::entity create_entity(entt::registry & r, float *vertices, unsigned int ver
   ShaderComponent s = {
     Shaders::get_shader("main")
   };
-
-
-  entt::entity e =r.create();
-  r.emplace<MeshComponent>(e, drawable);
-  r.emplace<ModelComponent>(e, m);
-  r.emplace<ShaderComponent>(e, s);
-  return e;
-
+  r.emplace<MeshComponent>(ent, drawable);
+  r.emplace<ModelComponent>(ent, m);
+  r.emplace<ShaderComponent>(ent, s);
 }

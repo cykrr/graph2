@@ -4,9 +4,11 @@
 #include <glm/vec3.hpp>
 
 struct ScaleComponent {
+  glm::vec3 axis;
   ScaleComponent(const ScaleComponent &) = default;
   ScaleComponent(ScaleComponent &) = default;
-  glm::vec3 axis;
+  ScaleComponent(ScaleComponent &&) = default;
+  ScaleComponent() {axis = glm::vec3(1.f);}
 };
 
 void scale_model(ModelComponent & mc, const ScaleComponent & rc);

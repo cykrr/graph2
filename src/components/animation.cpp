@@ -5,9 +5,9 @@ void add_animation(AnimationComponent &c, const Animation &a, int group)
   c.groups[group].push_back(a);
 }
 
-void add_animation(entt::registry &r, entt::entity &e, const Animation &a, int group)
+void add_animation(Entity &e, const Animation &a, int group)
 {
-  r.get<AnimationComponent>(e).groups[group].push_back(a);
+  e.get<AnimationComponent>().groups[group].push_back(a);
 }
 
 
@@ -40,14 +40,14 @@ void animation_update(AnimationComponent & a, float dt)
   }
 }
 
-int create_animation_group(entt::registry &r, entt::entity &e) {
-  AnimationComponent & c = r.get<AnimationComponent>(e);
+int create_animation_group(Entity &e) {
+  AnimationComponent & c = e.get<AnimationComponent>();
   c.groups.push_back(std::vector<Animation>());
   return c.groups.size() - 1;
 }
 
 
-int clear_animation_group(entt::registry &r, entt::entity &e, int group) {
-  r.get<AnimationComponent>(e).groups[group].clear();
+int clear_animation_group(Entity &e, int group) {
+  e.get<AnimationComponent>().groups[group].clear();
   return true;
 }

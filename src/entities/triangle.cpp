@@ -12,8 +12,8 @@ static float vertices[] =  {
      0.0f,  0.5f, 0.0f
   };
 
-entt::entity create_triangle(entt::registry & r) {
+Entity create_triangle(entt::registry & r) {
   static VAO vao;
   static VBO vbo(BufferType::array_buffer);
-  return create_entity(r, vertices, 3, vao, vbo);
+  return Entity(r, vertices, 3, vao, vbo);
 }

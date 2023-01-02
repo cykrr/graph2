@@ -27,12 +27,12 @@
 #include "entities/triangle.hpp"
 
 #include "gui.hpp"
-#include "gui/views/entity.hpp"
+#include "gui/views/entity_v.hpp"
 
 #include "gui/desc/easings.h"
 #include "gui/desc/camera.hpp"
 #include "gui/elements/matrix.hpp"
-
+using namespace Descriptors;
 Easings::easings animation_picker() {
   static int current_animation = 0;
   ImGui::Combo("Easings", &current_animation, Easings::name_array, IM_ARRAYSIZE(Easings::name_array));
@@ -84,26 +84,23 @@ void gui_render(GUI & gui) {
     static int current_camera = 0;
     ImGui::Combo("##Camera", &current_camera, Descriptors::Camera::m_name,
                  IM_ARRAYSIZE(Descriptors::Camera::m_name));
+    if (ImGui::Button("Update") || ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+      switch ((Descriptors::Camera::m_enum)current_camera) {
+      case Descriptors::Camera::OrthographicCamera:
+        update_orthographic_camera(gui.m_viewport_window.m_scene.cam,
+                                   gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+        break;
+      case Descriptors::Camera::PerspectiveCamera:
+        gui.m_viewport_window.m_scene.cam = PerspectiveCamera(
+            gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+        break;
+      case Descriptors::Camera::NoCamera:
+        break;
+      }
+  }
 
-    switch ((Descriptors::Camera::m_enum)current_camera) {
-    case Descriptors::Camera::OrthographicCamera:
-      printf("set ortho\n");
-      gui.m_viewport_window.m_scene.cam = OrthographicCamera(
-          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
-      break;
-    case Descriptors::Camera::PerspectiveCamera:
-      gui.m_viewport_window.m_scene.cam = PerspectiveCamera(
-          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
-      break;
-    case Descriptors::Camera::NoCamera:
-      gui.m_viewport_window.m_scene.cam = Camera();
-      break;
-      gui.m_viewport_window.m_scene.cam.update(
-          gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
-
-      Program::setMat4_id(Shaders::get_shader("main"), "vp",
-                          gui.m_viewport_window.m_scene.cam.matrix);
-    }
+  Program::setMat4_id(Shaders::get_shader("main"), "vp",
+                      gui.m_viewport_window.m_scene.cam.matrix);
     ImGui::Text("VP Size: %f, %f",
                 gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
 
@@ -112,16 +109,16 @@ void gui_render(GUI & gui) {
   ImGui::End();
 
   ImGui::Begin("Entities"); 
-    static entt::entity selection;
+    static Entity selection(gui.m_viewport_window.m_scene.m_registry);
     static bool selected = false;
-    Views::Entity::create(gui.m_viewport_window.m_scene.m_registry,
+    Views::VEntity::create(gui.m_viewport_window.m_scene.m_registry,
                           selection, selected);
-    Views::Entity::pick(gui.m_viewport_window.m_scene.m_registry, selection,
+    Views::VEntity::pick(gui.m_viewport_window.m_scene.m_registry, selection,
                         selected);
   ImGui::End(); 
 
 
-  if (selected) Views::Entity::view(gui.m_viewport_window.m_scene.m_registry, selection);
+  if (selected) Views::VEntity::view(selection);
 
   // Update and Render ImGUI
 

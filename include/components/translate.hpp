@@ -5,7 +5,8 @@
 
 struct TranslateComponent {
   TranslateComponent(const TranslateComponent &) = default;
-  glm::vec3 position;
+  TranslateComponent() = default;
+  glm::vec3 position = glm::vec3(1.f);
 };
 void translate_model(ModelComponent & mc, const TranslateComponent & rc);
 #endif

@@ -14,7 +14,8 @@ void Dock::update() {
 
   ImGuiID dockspace_id = ImGui::GetID("DockSpace");
   ImGui::DockSpace(dockspace_id, ImVec2(0, 0),
-                   ImGuiDockNodeFlags_PassthruCentralNode
+                   ImGuiDockNodeFlags_PassthruCentralNode |
+                   ImGuiDockNodeFlags_AutoHideTabBar
                    // ImGuiDockNodeFlags_NoTabBar
                    );
 

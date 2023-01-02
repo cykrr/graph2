@@ -1,5 +1,5 @@
 #include <map>
-
+namespace Descriptors {
 namespace Easings {
 
 const char* name_array[] = {
@@ -96,4 +96,5 @@ static const std::map<easings, const char *> name({
 });
 
 
+}
 }

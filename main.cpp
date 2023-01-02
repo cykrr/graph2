@@ -37,11 +37,6 @@ int main() {
   GUI gui(w);
 
   glfwSetWindowUserPointer(w, &gui);
-  glfwSetScrollCallback(w, [](GLFWwindow* w, double dx, double dy) {
-      printf("dx: %f dy: %f\n", dx, dy);
-      mdx = dx; mdy = dy;
-     
-  });
   glfwSetFramebufferSizeCallback(w, [](GLFWwindow *w, int width, int height) {
     GUI *s = (GUI *)glfwGetWindowUserPointer(w) ;
     glViewport(0, 0, width, height);

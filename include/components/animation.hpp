@@ -3,7 +3,8 @@
 
 #include <cstdio>
 #include <vector>
-#include "entt/entity/registry.hpp"
+#include "entity.hpp"
+
 typedef float(*easing_fn)(float, float, float, float);
 
 typedef struct Animation Animation;
@@ -34,14 +35,14 @@ struct Animation {
 };
 
 
-void add_animation(entt::registry &r, entt::entity &e, const Animation &a, int group = 0);
+void add_animation(Entity &e, const Animation &a, int group = 0);
 void add_animation(AnimationComponent &c, const Animation &a);
 bool run_animation(Animation & a, double dt);
 void add_animation(AnimationComponent &c, const Animation &a, int group = 0);
 void animation_update(AnimationComponent & a, float dt);
 
-int create_animation_group(entt::registry &r, entt::entity &e);
-int clear_animation_group(entt::registry &r, entt::entity &e, int group = 0);
+int create_animation_group(Entity & e);
+int clear_animation_group(Entity & e, int group = 0);
 
 
 

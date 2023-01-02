@@ -10,7 +10,10 @@
 class Camera {
     public:
         glm::mat4 matrix = glm::mat4(1.f);
-        virtual void update(int w, int h){}
+        virtual void update(int w, int h){
+          // printf("notin\n");
+        };
+        Camera(){}
         virtual ~Camera(){};
 };
 class OrthographicCamera : public Camera {
@@ -59,5 +62,7 @@ class Cam3D {
         void moveFront();
         void updateDirection();
 };
+
+void update_orthographic_camera(Camera &cam, int w, int h);
 
 #endif

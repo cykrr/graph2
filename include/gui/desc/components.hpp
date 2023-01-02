@@ -1,5 +1,7 @@
 #ifndef GUI_COMPONENTS_H
 #define GUI_COMPONENTS_H
+namespace Descriptors {
+
 namespace Components {
 
 enum m_enum {
@@ -26,5 +28,6 @@ static const char * m_name [] {
 
 
 
+}
 }
 #endif

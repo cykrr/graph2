@@ -11,9 +11,9 @@ public:
   void update_fbo();
   void bind_fbo();
   void unbind_fbo();
-  ImVec2       size;
-  ImVec2       pos;
-  Scene m_scene;
+  ImVec2 size;
+  ImVec2 pos;
+  Scene  m_scene;
 protected:
   unsigned int m_color_texture;
   unsigned int m_fbo;

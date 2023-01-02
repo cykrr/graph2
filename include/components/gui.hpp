@@ -8,13 +8,13 @@ struct GUIComponent
 {
   char m_name[50];
   char m_type[50];
-  std::vector<Components::m_enum> components;
+  std::vector<Descriptors::Components::m_enum> components;
 
   GUIComponent() = default;
   GUIComponent(GUIComponent &&) = default;
   GUIComponent(const GUIComponent &) = default;
   ~GUIComponent() = default;
-  GUIComponent(char *name, const char *type, std::vector<enum Components::m_enum> components) :
+  GUIComponent(char *name, const char *type, std::vector<enum Descriptors::Components::m_enum> components) :
     components(components) {
       strcpy(m_name, name); strcpy(m_type, type);
       
