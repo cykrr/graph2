@@ -16,14 +16,14 @@ enum m_enum {
 };
 
 static const char * m_name [] {
- "NoComponent",
- "MeshComponent",
- "AnimationComponent",
- "ScaleComponent",
- "TranslateComponent",
- "RotateComponent",
- "ModelComponent",
- "ShaderComponent",
+ "None",
+ "Mesh",
+ "Animation",
+ "Scale",
+ "Translate",
+ "Rotate",
+ "Model",
+ "Shader",
 };
 
 

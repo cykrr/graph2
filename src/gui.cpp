@@ -32,10 +32,12 @@
 #include "gui/desc/easings.h"
 #include "gui/desc/camera.hpp"
 #include "gui/elements/matrix.hpp"
+
 using namespace Descriptors;
 Easings::easings animation_picker() {
   static int current_animation = 0;
-  ImGui::Combo("Easings", &current_animation, Easings::name_array, IM_ARRAYSIZE(Easings::name_array));
+  ImGui::Combo("Easings", &current_animation, Easings::name_array,
+               IM_ARRAYSIZE(Easings::name_array));
   return (Easings::easings)current_animation;
 
 }
@@ -76,6 +78,7 @@ void gui_render(GUI & gui) {
   glfwGetCursorPos(gui.m_window, &posx, &posy);
 
   // ImGui::ShowMetricsWindow(NULL);
+  ImGui::ShowDemoWindow(NULL);
 
   gui.m_viewport_window.draw();
 
@@ -88,7 +91,8 @@ void gui_render(GUI & gui) {
       switch ((Descriptors::Camera::m_enum)current_camera) {
       case Descriptors::Camera::OrthographicCamera:
         update_orthographic_camera(gui.m_viewport_window.m_scene.cam,
-                                   gui.m_viewport_window.size.x, gui.m_viewport_window.size.y);
+                                   gui.m_viewport_window.size.x,
+                                   gui.m_viewport_window.size.y);
         break;
       case Descriptors::Camera::PerspectiveCamera:
         gui.m_viewport_window.m_scene.cam = PerspectiveCamera(

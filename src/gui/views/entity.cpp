@@ -14,6 +14,7 @@
 #include "gui/views/entity_v.hpp"
 #include "gui/views/component.hpp"
 
+using namespace Descriptors;
 namespace Views::VEntity {
 
 typedef struct Entity (*entity_fn_t)(entt::registry &);
@@ -23,7 +24,8 @@ void create(entt::registry & r, struct Entity & selection, bool & selected)
 {
   ImGui::Text("Create entity:");
   // grab primitive and it's name
-  std::tuple<const char *, entity_fn_t> entity_desc =  entity_type_picker_draw(r);
+  std::tuple<const char *, entity_fn_t> entity_desc = 
+                                              entity_type_picker_draw(r);
 
   // draw color
   static Color color("#ffffff");
@@ -46,10 +48,10 @@ void create(entt::registry & r, struct Entity & selection, bool & selected)
     selection = std::get<1>(entity_desc)(r); 
     selected = true;
 
-    std::vector<Descriptors::Components::m_enum> components;
-    components.push_back(Descriptors::Components::MeshComponent);
-    components.push_back(Descriptors::Components::ShaderComponent);
-    components.push_back(Descriptors::Components::ModelComponent);
+    std::vector<Components::m_enum> components;
+    components.push_back(Components::MeshComponent);
+    components.push_back(Components::ShaderComponent);
+    components.push_back(Components::ModelComponent);
     // Fill it's components
     GUIComponent nc(buf,  ent_type_str, components);
     selection.emplace<GUIComponent>(nc);
@@ -66,7 +68,15 @@ void pick(entt::registry &r, struct Entity & selection, bool &selected)
     auto view = r.view<GUIComponent>();
     for (const entt::entity & ent : view) {
       GUIComponent & name = r.get<GUIComponent>(ent);
-      if (ImGui::Selectable(name.m_name , ent == selection.ent))  {
+
+      bool is_selected = ImGui::Selectable(name.m_name,
+                                           ent == selection.ent);
+      if (ImGui::BeginPopupContextItem())
+      {
+        ImGui::Text("sakjdsakjd");
+        ImGui::EndPopup();
+      }
+      if (is_selected)  {
         selection.ent = ent;
         selected = true;
       }
@@ -83,11 +93,10 @@ void view(struct Entity & selection) {
   GUIComponent & nc = selection.get<GUIComponent>();
   static int selected_component = false;
   ImGui::Text("Components");
-  using namespace Descriptors;
-  ImGui::ListBox("##Components", &selected_component, [](void *data, int idx, const char ** out_text) {
-                   Descriptors::Components::m_enum pos = ((Descriptors::Components::m_enum*)data)[idx];
+  ImGui::ListBox("##Components", &selected_component,
+                 [](void *data, int idx, const char ** out_text) {
+                   Components::m_enum pos = ((Components::m_enum*)data)[idx];
                    *out_text = Components::m_name[pos];
-
                    return true;
                  }, &nc.components[0], nc.components.size());
 
@@ -96,19 +105,22 @@ void view(struct Entity & selection) {
   Components::m_enum component = nc.components[selected_component];
 
   switch (component) {
-    case Descriptors::Components::TranslateComponent: {
-      TranslateComponent & s = selection.reg.get<TranslateComponent>(selection.ent);
+    case Components::TranslateComponent: {
+
+      TranslateComponent & s = 
+        selection.reg.get<TranslateComponent>(selection.ent);
+
       ImGui::Text("Scale");
       ImGui::InputFloat3("##Scale", &s.position.x, "%.2f");
       break;
     }
-    case Descriptors::Components::ScaleComponent: {
+    case Components::ScaleComponent: {
       ScaleComponent & s = selection.reg.get<ScaleComponent>(selection.ent);
       ImGui::Text("Scale");
       ImGui::InputFloat3("##Scale", &s.axis.x, "%.2f");
       break;
     }
-    case Descriptors::Components::AnimationComponent: {
+    case Components::AnimationComponent: {
       AnimationComponent & ac = selection.get<AnimationComponent>();
       ImGui::Text("Animations");
       ImGui::BeginListBox("##Animations");
@@ -131,8 +143,9 @@ void view(struct Entity & selection) {
       ImGui::Text("Drawable Component");
       ImGui::Text("VAO id: %d", dc.m_vao);
       ImGui::Text("Vertex count: %d", dc.m_vert_count);
-      if (ImGui::ColorEdit3("Color", &dc.m_color.r, ImGuiColorEditFlags_DisplayHex |
-                            ImGuiColorEditFlags_InputRGB |
+      if (ImGui::ColorEdit3("Color", &dc.m_color.r,
+                            ImGuiColorEditFlags_DisplayHex |
+                            ImGuiColorEditFlags_InputRGB   |
                             ImGuiColorEditFlags_NoAlpha)) {
       }
       ImGui::Checkbox("Wireframe", &dc.m_show_wireframe);
@@ -182,12 +195,8 @@ void view(struct Entity & selection) {
   ImGui::End();
 }
 
-
-
-
-
-
-std::tuple<const char *, entity_fn_t> entity_type_picker_draw(entt::registry & r)
+std::tuple<const char *, entity_fn_t>
+entity_type_picker_draw(entt::registry & r)
 {
   static const char * items_str[] = {"Triangle", "Cube"};
 
@@ -199,7 +208,9 @@ std::tuple<const char *, entity_fn_t> entity_type_picker_draw(entt::registry & r
   ImGui::Text("Type");
   ImGui::Combo("##Type", &item_current, items_str, IM_ARRAYSIZE(items_str));
   current_func = items_func[item_current];
-  return std::tuple<const char *, entity_fn_t>(items_str[item_current], current_func);
+
+  return std::tuple<const char *, entity_fn_t>
+                        (items_str[item_current], current_func);
 }
 
 }

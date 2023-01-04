@@ -5,6 +5,6 @@
 #include "components/model.hpp"
 
 void translate_model(ModelComponent & mc, const TranslateComponent & tc) {
-  // mc.matrix = glm::translate(glm::mat4(1.f), tc.position);
-  mc.matrix = glm::translate(mc.matrix, tc.position);
+  mc.matrix = glm::translate(glm::mat4(1.f), tc.position);
+  // mc.matrix = glm::translate(mc.matrix, tc.position);
 }
