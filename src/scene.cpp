@@ -32,23 +32,24 @@ void Scene::render()
   auto rotate_view = m_registry.view<RotateComponent, ModelComponent>();
   auto translate_view = m_registry.view<TranslateComponent, ModelComponent>();
 
+  translate_view.each(
+      [](TranslateComponent & tc, ModelComponent & mc) {
+        translate_model(mc, tc);
+      });
+
+  rotate_view.each(
+      [](RotateComponent & rc, ModelComponent & mc) {
+        rotate_model(mc, rc);
+      });
 
   scale_view.each(
       [](ScaleComponent & sc, ModelComponent & mc) {
         scale_model(mc, sc);
       });
 
-  translate_view.each(
-      [](TranslateComponent & tc, ModelComponent & mc) {
-        translate_model(mc, tc);
-      });
 
 
 
-  rotate_view.each(
-      [](RotateComponent & rc, ModelComponent & mc) {
-        rotate_model(mc, rc);
-      });
 
 
 
