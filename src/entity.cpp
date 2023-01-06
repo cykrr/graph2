@@ -1,6 +1,7 @@
 
 #include "components/mesh.hpp"
 #include "components/rotate.hpp"
+#include "components/mesh.hpp"
 #include "components/scale.hpp"
 #include "components/model.hpp"
 #include "components/translate.hpp"
@@ -28,9 +29,11 @@ Entity::Entity(entt::registry & r, const float *vertices, unsigned int vertex_co
 
   vao.bind();
   vbo.bind_buffer();
-  vbo.send_data(3*vertex_count*sizeof(float), (float*)vertices, GL_STATIC_DRAW);
-  vao.set_vertex_attr_ptr(0,  3, GL_FLOAT, 3 * sizeof(float), NULL);
+  vbo.send_data(5*vertex_count*sizeof(float), (float*)vertices, GL_STATIC_DRAW);
+  vao.set_vertex_attr_ptr(0,  3, GL_FLOAT, 5 * sizeof(float), NULL);
+  vao.set_vertex_attr_ptr(1,  2, GL_FLOAT, 5 * sizeof(float), (void*)(3*sizeof(float)));
   vao.enable_vertex_attr_array(0);
+  vao.enable_vertex_attr_array(1);
 
   vbo.unbind();
   vao.unbind();
@@ -69,4 +72,14 @@ void add_scale(Entity & e, float x, float y, float z)
 {
 
   e.emplace<ScaleComponent>(ScaleComponent(x,y,z));
+}
+
+void add_rotation(Entity & e, int x, int y, int z, float rads)
+{
+
+  e.emplace<RotateComponent>(RotateComponent{glm::vec3(x,y,z), rads});
+}
+
+void set_wireframe(Entity & e, bool b) {
+  e.get<MeshComponent>().m_show_wireframe = b;
 }

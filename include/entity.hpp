@@ -13,7 +13,8 @@ struct Entity {
   Entity(entt::registry & r) : reg(r) {
       this->ent = r.create();
   }
-  Entity(entt::registry & r, const float *vertices, unsigned int vertex_count, VAO & vao, VBO &vbo);
+  Entity(entt::registry & r, const float *vertices, unsigned int vertex_count,
+         VAO & vao, VBO &vbo);
 
   Entity(entt::registry & r, const float *vertices, const unsigned int *indices, unsigned int vertex_count, unsigned int indices_count, VAO & vao, VBO &vbo, VBO & ebo);
   
@@ -34,9 +35,12 @@ struct Entity {
 
 };
 
-void add_position(Entity & e, float x, float y, float z = 0);
+void add_position(Entity & e, float x = 0, float y = 0, float z = 0);
 void set_position(Entity & e, float x, float y, float z = 0);
 
 void add_scale(Entity & e, float x, float y, float z = 0);
+
+void set_wireframe(Entity & e, bool b);
+void add_rotation(Entity & e, int x, int y, int z, float rads);
 
 #endif

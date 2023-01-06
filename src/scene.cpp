@@ -47,12 +47,6 @@ void Scene::render()
         scale_model(mc, sc);
       });
 
-
-
-
-
-
-
   draw_view.each([](struct MeshComponent &drawable,
                     struct ModelComponent &model,
                     struct ShaderComponent &shader) {

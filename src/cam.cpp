@@ -90,5 +90,5 @@ void Cam3D::updateDirection() {
 void update_orthographic_camera(Camera &cam, int w, int h)
 {
     cam.matrix = glm::ortho(0.f, static_cast<float>(w), 
-            static_cast<float>(h), 0.f, -1.0f, 1.0f);
+            static_cast<float>(h), 0.f, -1000.0f, 1000.0f);
 }

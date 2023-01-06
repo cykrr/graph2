@@ -26,6 +26,11 @@ class Program {
             glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value); 
         }
         // ------------------------------------------------------------------------
+        static void setInt_id(unsigned int id, const std::string &name, int value)
+        { 
+            glUniform1i(glGetUniformLocation(id, name.c_str()), value); 
+        }
+        // ------------------------------------------------------------------------
         void setInt(const std::string &name, int value) const
         { 
             glUniform1i(glGetUniformLocation(id, name.c_str()), value); 
