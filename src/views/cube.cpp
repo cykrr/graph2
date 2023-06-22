@@ -58,7 +58,7 @@ Cube::Cube() : Drawable("main"){
 
 void Cube::draw(){
     this->shader.use();
-    this->shader.setMat4("m", this->model);
+    // this->shader.setMat4("m", this->model);
     vao->bind();
     glDrawArrays(GL_TRIANGLES, 0, 108);
 }
